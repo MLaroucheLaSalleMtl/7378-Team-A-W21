@@ -6,15 +6,22 @@ using UnityEngine.InputSystem;
 public class CharacterMovement : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D player;
-    Vector2 dir = new Vector2();
+    [SerializeField] private float dashAmount = 3f;
+
+    private bool isDashing = false;
+
+    Vector3 dir = new Vector3();
     public float speed = 275.0f;
+
+    Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
-
+    
     public void OnMove()
     {
         dir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -22,7 +29,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void Movement()
     {
-        Vector2 pos = new Vector2();
+        Vector3 pos = new Vector3();
         pos += (dir.normalized * speed) * Time.fixedDeltaTime;
         player.velocity = pos;
     }
@@ -31,10 +38,32 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         OnMove();
+
+        if (Input.GetButtonDown("Dash"))
+        {
+            isDashing = true;
+        }
     }
 
     private void FixedUpdate()
     {
+        Animate();
         Movement();
+
+        if (isDashing == true)
+        {
+            player.MovePosition(transform.position + dir * dashAmount);
+            StaminaBar.instance.UseStamina(15);
+            isDashing = false;
+        }
     }
+
+    private void Animate()
+    {
+        //anim.SetFloat("Magnitude", player.velocity.magnitude);
+        anim.SetFloat("X", dir.x);
+        anim.SetFloat("Y", dir.y);
+    }
+
+
 }

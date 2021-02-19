@@ -19,26 +19,35 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] public float playerFoundDistance;
     [SerializeField] public float stopDistance;
     [SerializeField] public float abandonDistance;
-    [SerializeField] public GameObject melee;
+    //[SerializeField] public GameObject melee;
 
     private Transform player;
+    Rigidbody2D rigid;
+    Animator anim;
+    Vector2 direction = new Vector2();
+    public bool isStopped = false;
+    public bool isAttacking = false;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        rigid = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         patrolWait = patrolCounter;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Animate();
         OnPursuit();
     }
 
     void OnPatrol()
     {
         transform.position = Vector2.MoveTowards(transform.position, patrolPoint[points].position, patrolSpeed * Time.deltaTime);
+        direction = (patrolPoint[points].transform.position - transform.position).normalized;
 
         if (Vector2.Distance(transform.position, patrolPoint[points].position) < 0.2f)
         {
@@ -52,29 +61,45 @@ public class EnemyBehavior : MonoBehaviour
                 }
 
                 patrolWait = patrolCounter;
+                isStopped = false;
             }
             else
             {
                 patrolWait -= Time.deltaTime;
+                isStopped = true;
             }
         }
     }
 
     void OnPursuit()
     {
+        direction = (player.transform.position - transform.position).normalized;
+
         if (Vector2.Distance(transform.position, player.position) < playerFoundDistance && Vector2.Distance(transform.position, player.position) > stopDistance)
         {
+            isStopped = false;
+            isAttacking = false;
             transform.position = Vector2.MoveTowards(transform.position, player.position, pursuitSpeed * Time.deltaTime);
         }
         else if (Vector2.Distance(transform.position, player.position) <= stopDistance)
         {
             transform.position = this.transform.position;
+            isStopped = true;
+            isAttacking = true;
             //Instantiate(melee, transform.position, Quaternion.identity);
         }
         else if (Vector2.Distance(transform.position, player.position) > abandonDistance)
         {
             OnPatrol();
         }
+    }
+
+    void Animate()
+    {
+        anim.SetFloat("X", direction.x);
+        anim.SetFloat("Y", direction.y);
+        anim.SetBool("IsStopped", isStopped);
+        anim.SetBool("IsAttacking", isAttacking);
     }
 
 }
