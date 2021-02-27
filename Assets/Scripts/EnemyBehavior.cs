@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour
 {
-    [Header("Player Options:")]
+    [Header("Enemy Options:")]
+    [SerializeField] public int HP;
+    [SerializeField] public int attack;
     [SerializeField] public float speed;
+    [SerializeField] public bool rangedEnemy;
     [Space]
     [Header("Patrol Options:")]
     [SerializeField] public float patrolSpeed;
@@ -14,19 +17,23 @@ public class EnemyBehavior : MonoBehaviour
     private float patrolWait;
     private int points = 1;
     [Space]
+    [Header("Attack Options:")]
+    [SerializeField] public GameObject rangedWeapon;
+    [SerializeField] public float atkCounter;
+    private float atkWait;
+    [Space]
     [Header("Pursuit Options:")]
     [SerializeField] public float pursuitSpeed;
     [SerializeField] public float playerFoundDistance;
     [SerializeField] public float stopDistance;
     [SerializeField] public float abandonDistance;
-    //[SerializeField] public GameObject melee;
 
     private Transform player;
     Rigidbody2D rigid;
     Animator anim;
     Vector2 direction = new Vector2();
-    public bool isStopped = false;
-    public bool isAttacking = false;
+    private bool isStopped = false;
+    private bool isAttacking = false;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +42,7 @@ public class EnemyBehavior : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         patrolWait = patrolCounter;
+        atkWait = atkCounter;
     }
 
     // Update is called once per frame
@@ -71,6 +79,26 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
+    void OnAttack()
+    {
+        if (atkWait <= 0)
+        {
+            atkWait = atkCounter;
+            isAttacking = true;
+
+            if(rangedEnemy == true)
+            {
+                Instantiate(rangedWeapon, transform.position, Quaternion.identity);
+            }
+           
+        }
+        else
+        {
+            atkWait -= Time.deltaTime;
+            isAttacking = false;
+        }
+    }
+
     void OnPursuit()
     {
         direction = (player.transform.position - transform.position).normalized;
@@ -85,8 +113,8 @@ public class EnemyBehavior : MonoBehaviour
         {
             transform.position = this.transform.position;
             isStopped = true;
-            isAttacking = true;
-            //Instantiate(melee, transform.position, Quaternion.identity);
+            //isAttacking = true;
+            OnAttack();
         }
         else if (Vector2.Distance(transform.position, player.position) > abandonDistance)
         {
@@ -101,5 +129,4 @@ public class EnemyBehavior : MonoBehaviour
         anim.SetBool("IsStopped", isStopped);
         anim.SetBool("IsAttacking", isAttacking);
     }
-
 }

@@ -7,7 +7,8 @@ public class CharacterProjectile : MonoBehaviour
     public GameObject projectile;
     private float atkCd;
     private Transform projDirection;
-    private Vector2 projDir;
+    private Vector3 projDir;
+    [SerializeField]private float projSpeed = 6f;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +19,7 @@ public class CharacterProjectile : MonoBehaviour
     void Update()
     {
         OnThrow();
-        //transform.position += projDir * Time.deltaTime * 6f;
+        transform.position += projDir * Time.deltaTime * projSpeed;
         if (atkCd >= 0)
         {
             atkCd -= 1.0f;

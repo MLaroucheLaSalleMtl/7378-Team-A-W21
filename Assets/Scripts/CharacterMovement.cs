@@ -7,13 +7,19 @@ public class CharacterMovement : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D player;
     [SerializeField] private float dashAmount = 3f;
+    [SerializeField] private int dashCost = 20;
+
+    [SerializeField] private LayerMask dashLayerMask;
 
     private bool isDashing = false;
+    private bool CanDash;
 
     Vector3 dir = new Vector3();
     public float speed = 275.0f;
 
     Animator anim;
+
+    public bool CanDash1 { get => CanDash; set => CanDash = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +45,7 @@ public class CharacterMovement : MonoBehaviour
     {
         OnMove();
 
-        if (Input.GetButtonDown("Dash"))
+        if (Input.GetButtonDown("Dash") && CanDash1 == true)
         {
             isDashing = true;
         }
@@ -52,8 +58,15 @@ public class CharacterMovement : MonoBehaviour
 
         if (isDashing == true)
         {
-            player.MovePosition(transform.position + dir * dashAmount);
-            StaminaBar.instance.UseStamina(15);
+            Vector3 dashPosition = transform.position + dir * dashAmount;
+            RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, dir, dashAmount, dashLayerMask);
+            if(raycastHit2D.collider != null)
+            {
+                dashPosition = raycastHit2D.point;
+            }
+
+            StaminaBar.instance.UseStamina(dashCost);
+            player.MovePosition(dashPosition);
             isDashing = false;
         }
     }

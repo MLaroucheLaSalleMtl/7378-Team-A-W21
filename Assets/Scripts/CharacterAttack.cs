@@ -18,6 +18,8 @@ public class CharacterAttack : MonoBehaviour
     Vector2 direction = new Vector2();
     Animator anim;
     public bool isAttacking = false;
+
+    [SerializeField] public GameObject projectile;
     // Start is called before the first frame update
     void Start()
     {
@@ -63,6 +65,10 @@ public class CharacterAttack : MonoBehaviour
                 {
                     Debug.Log("UltHit");
                 }
+            }
+            if (Input.GetButton("Fire2"))
+            {
+                Instantiate(projectile, transform.position, Quaternion.identity);
             }
         }
 

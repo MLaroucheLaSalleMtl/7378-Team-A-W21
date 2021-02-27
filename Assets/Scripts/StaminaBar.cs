@@ -13,8 +13,6 @@ public class StaminaBar : MonoBehaviour
     private WaitForSeconds regeneration = new WaitForSeconds(0.1f);
     private Coroutine regen;
 
-    public bool CanDash = true;
-
     public static StaminaBar instance;
 
     private CharacterMovement CanDashBool;
@@ -27,9 +25,26 @@ public class StaminaBar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject scriptReference = GameObject.FindGameObjectWithTag("Player");
+        CanDashBool = scriptReference.GetComponent<CharacterMovement>();
+
         currentStamina = maxStamina;
         staminaBar.maxValue = maxStamina;
         staminaBar.value = maxStamina;
+    }
+
+    private void Update()
+    {
+        
+        if(currentStamina > 20)
+        {
+            CanDashBool.CanDash1 = true;
+        }
+        else
+        {
+            CanDashBool.CanDash1 = false;
+        }
+        
     }
 
     public void UseStamina(int amount)
@@ -43,7 +58,6 @@ public class StaminaBar : MonoBehaviour
             {
                 StopCoroutine(regen);
             }
-
             regen = StartCoroutine(regenStamina());
         }
         else
