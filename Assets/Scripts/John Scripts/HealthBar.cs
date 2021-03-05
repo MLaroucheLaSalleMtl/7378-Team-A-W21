@@ -1,0 +1,98 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class HealthBar : MonoBehaviour
+{
+    [Header("Health")]
+    [SerializeField] private float currentHealth = 100f;
+    [SerializeField] private float maxHealth = 100f;
+
+    [Header("Variables")]
+    private float speed;
+    [SerializeField] private float regenAmount = 1;
+    private float totaltimepassed = 0;
+
+    [Header("Slider")]
+    [SerializeField] private Slider healthBar;
+
+    [Header("Settings")]
+    private Rigidbody2D player;
+    private Collider2D playerCollider;
+    private SpriteRenderer sprite;
+    private CharacterMovement movement;
+    private CharacterAttack attack;
+    private CharacterProjectile projectile;
+    public static HealthBar instance;
+
+
+    public float CurrentHealth { get; set; }
+    public float MaxHealth { get => maxHealth; set => maxHealth = value; }
+
+    private void Awake()
+    {
+        instance = this;
+        CurrentHealth = currentHealth;
+    }
+
+    private void Start()
+    {
+        currentHealth = MaxHealth;
+        healthBar.maxValue = MaxHealth;
+        healthBar.value = MaxHealth;
+
+        player = GetComponent<Rigidbody2D>();
+        playerCollider = GetComponent<Collider2D>();
+        sprite = GetComponent<SpriteRenderer>();
+        movement = GetComponent<CharacterMovement>();
+        attack = GetComponent<CharacterAttack>();
+        projectile = GetComponent<CharacterProjectile>();
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if(CurrentHealth <= 0)
+        {
+            return;
+        }
+
+        CurrentHealth -= damage;
+        healthBar.value = CurrentHealth;
+
+        if (CurrentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void GiveHealth(int health)
+    {
+        totaltimepassed += Time.deltaTime;
+        if(CurrentHealth < MaxHealth && totaltimepassed > 0.2)
+        {
+            CurrentHealth += health;
+            healthBar.value = CurrentHealth;
+            totaltimepassed = 0;
+        }
+    }
+
+    private void Die()
+    {
+        SceneManager.LoadScene(sceneBuildIndex: 4);
+
+        if (player != null)
+        {
+            float x = Input.GetAxis("Horizontal");
+            float y = Input.GetAxis("Vertical");
+            player.velocity = new Vector2(x * speed, y * speed);
+
+            playerCollider.enabled = false;
+            sprite.enabled = false;
+            movement.enabled = false;
+            attack.enabled = false;
+            projectile.enabled = false;
+        }   
+    }
+}
