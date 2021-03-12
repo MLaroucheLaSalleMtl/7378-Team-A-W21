@@ -50,7 +50,7 @@ public class CharacterMovement : MonoBehaviour
     {
         OnMove();
 
-        if (Input.GetButtonDown("Dash") && CanDash1 == true)
+        if (Input.GetButtonDown("Dash") && CanDash1 == true && player.velocity.magnitude > 0)
         {
             isDashing = true;
         }

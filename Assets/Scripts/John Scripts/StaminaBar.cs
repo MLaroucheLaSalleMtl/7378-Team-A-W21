@@ -36,8 +36,8 @@ public class StaminaBar : MonoBehaviour
     }
 
     private void Update()
-    {     
-        if(CurrentStamina > 20)
+    {
+        if(CurrentStamina >= 20)
         {
             CanDashBool.CanDash1 = true;
         }
@@ -68,7 +68,7 @@ public class StaminaBar : MonoBehaviour
 
     private IEnumerator regenStamina()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1.5f);
 
         while(CurrentStamina < maxStamina)
         {

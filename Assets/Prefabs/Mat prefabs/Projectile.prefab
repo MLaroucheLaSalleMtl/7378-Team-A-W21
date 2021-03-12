@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myCharacter: {fileID: 0}
-  projSpeed: 3
+  projSpeed: 12
   projDmg: 30
   projStaminaCost: 20
 --- !u!61 &-5578326618680178833
