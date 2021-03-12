@@ -18,11 +18,23 @@ public class HealthRegen : MonoBehaviour
     }
 
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            health.GiveHealth(healthGiven);   
+            InvokeRepeating("RegeningHealth", 1, 0.1f);   
         }
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        CancelInvoke("RegeningHealth");
+    }
+
+    private void RegeningHealth()
+    {
+        health.GiveHealth(healthGiven);
+    }
+
+
 }

@@ -8,7 +8,6 @@ public class AcidDamage : MonoBehaviour
     [SerializeField] private float slowSpeed = 100f;
     [SerializeField] private float normalSpeed = 300f;
     [SerializeField] private int poisonDamage = 1;
-    private float totaltimepassed = 0;
 
 
     [Header("Script References")]
@@ -25,17 +24,12 @@ public class AcidDamage : MonoBehaviour
 
 
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
             movement.speed = slowSpeed;
-            totaltimepassed += Time.deltaTime;
-            if(totaltimepassed > 0.2)
-            {
-                damage.TakeDamage(poisonDamage);
-                totaltimepassed = 0;
-            }
+            InvokeRepeating("PoisonDamage", 1f, 0.25f);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -43,6 +37,12 @@ public class AcidDamage : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             movement.speed = normalSpeed;
+            CancelInvoke("PoisonDamage");
         }
+    }
+
+    private void PoisonDamage()
+    {
+        damage.TakeDamage(poisonDamage);
     }
 }

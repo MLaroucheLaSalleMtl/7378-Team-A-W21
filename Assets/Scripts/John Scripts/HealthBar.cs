@@ -60,6 +60,7 @@ public class HealthBar : MonoBehaviour
 
         CurrentHealth -= damage;
         healthBar.value = CurrentHealth;
+        CamShake.instance.ShakeCam(3f, 0.05f);
 
         if (CurrentHealth <= 0)
         {
@@ -69,12 +70,10 @@ public class HealthBar : MonoBehaviour
 
     public void GiveHealth(int health)
     {
-        totaltimepassed += Time.deltaTime;
-        if(CurrentHealth < MaxHealth && totaltimepassed > 0.2)
+        if(CurrentHealth < MaxHealth)
         {
             CurrentHealth += health;
             healthBar.value = CurrentHealth;
-            totaltimepassed = 0;
         }
     }
 

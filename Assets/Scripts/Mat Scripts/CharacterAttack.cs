@@ -9,7 +9,7 @@ public class CharacterAttack : MonoBehaviour
 {
     [Header("Attack Area")]
     public GameObject sword;
-    [SerializeField] private Transform atkArea;
+    [SerializeField] public Transform atkArea;
     [SerializeField] private float atkSize;
     private float atkCd;
     Vector2 direction = new Vector2();
@@ -23,13 +23,14 @@ public class CharacterAttack : MonoBehaviour
     [SerializeField] private Text ultCdTimer;
     private int staminaUlt = 20;
     private float ultCd = 0f;
-    private bool canUlt;
+    private bool canUseStamina;
 
     [Header("Enemy Layer")]
     [SerializeField] private LayerMask enemyLayer;
     
     [Header("Projectile")]
     [SerializeField] public GameObject projectile;
+    private int staminaThrow = 20;
     private float projCd;
 
     // Start is called before the first frame update
@@ -45,7 +46,7 @@ public class CharacterAttack : MonoBehaviour
         AttackDirection();
         OnAttack();
 
-        canUlt = GetComponent<CharacterMovement>().CanDash1;
+        canUseStamina = GetComponent<CharacterMovement>().CanDash1;
         if (atkCd >= 0)
         {
             atkCd -= Time.deltaTime;
@@ -83,11 +84,13 @@ public class CharacterAttack : MonoBehaviour
                 Collider2D[] enemies = Physics2D.OverlapCircleAll(atkArea.position, atkSize, enemyLayer);
                 for (int i = 0; i < enemies.Length; i++)
                 {
-                    Debug.Log("Hit");
+                    Transform enemyTrans = enemies[i].GetComponent<Transform>();
                     enemies[i].GetComponent<EnemyBehavior>().TakeDamage(dmg);
+                    Vector2 knock = enemyTrans.position - transform.position;
+                    enemyTrans.position = new Vector2(enemyTrans.position.x + knock.x, enemyTrans.position.y + knock.y);
                 }
             }
-            if (Input.GetButton("Ultimate") && ultCd <= 0 && canUlt == true)
+            if (Input.GetButton("Ultimate") && ultCd <= 0 && canUseStamina == true)
             {
                 ultCd = 15f;
                 ultPoof.Play();
@@ -95,16 +98,45 @@ public class CharacterAttack : MonoBehaviour
                 Collider2D[] enemies = Physics2D.OverlapCircleAll(ultArea.position, ultSize, enemyLayer);
                 for (int i = 0; i < enemies.Length; i++)
                 {
-                    Debug.Log("UltHit");
+                    //Transform enemyTrans = enemies[i].GetComponent<Transform>();
                     enemies[i].GetComponent<EnemyBehavior>().TakeDamage(dmg*3);
-                    //ultPoof.Play();
+                    //Vector2 knock = enemyTrans.position - transform.position;
+                    //enemyTrans.position = new Vector2(enemyTrans.position.x + knock.x, enemyTrans.position.y + knock.y);
                 }
             }
-            //if (Input.GetButton("Fire2") && projCd <= 0)
-            //{
-            //    projCd = 1.0f;
-            //    Instantiate(projectile, transform.position, Quaternion.identity);
-            //}
+            if (Input.GetButton("Fire2") && projCd <= 0 && canUseStamina == true)
+            {
+                projCd = 1.0f;
+                float rotate = 0f;
+                if (atkArea.localPosition.x < 0 && atkArea.localPosition.y == 0)
+                {
+                    //projectile.transform.rotation = new Quaternion (0, 0, 180, 0);
+                    rotate = 180;
+                }
+                else if (atkArea.localPosition.y > 0 && atkArea.localPosition.x == 0)
+                {
+                    //projectile.transform.rotation = new Quaternion(0, 0, 90, 0);
+                    rotate = 90;
+                }
+                else if (atkArea.localPosition.y < 0 && atkArea.localPosition.x == 0)
+                {
+                    //projectile.transform.rotation = new Quaternion(0, 0, 270, 0);
+                    rotate = 270;
+                }
+                else
+                {
+                    //projectile.transform.rotation = new Quaternion(0, 0, 0, 0);
+                    rotate = 0;
+                }
+                StaminaBar.instance.UseStamina(staminaThrow);
+                GameObject proj = Instantiate(projectile, atkArea.transform.position, Quaternion.Euler (0, 0, rotate), null);
+             
+                //proj.transform.rotation = ne
+                //new Quaternion(0, 0, rotate, 0)
+                //Quaternion projRotate = proj.transform.rotation;
+                //projRotate.z = rotate.z;
+                Debug.Log("x " + atkArea.localPosition.x + " y " + atkArea.localPosition.y);
+            }
         }
     }
     public Vector2 AttackDirection()
@@ -152,4 +184,5 @@ public class CharacterAttack : MonoBehaviour
     {
         isAttacking = false;
     }
+
 }

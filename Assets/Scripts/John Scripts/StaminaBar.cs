@@ -17,6 +17,8 @@ public class StaminaBar : MonoBehaviour
 
     private CharacterMovement CanDashBool;
 
+    public int CurrentStamina { get => currentStamina; set => currentStamina = value; }
+
     private void Awake()
     {
         instance = this;    
@@ -28,14 +30,14 @@ public class StaminaBar : MonoBehaviour
         GameObject scriptReference = GameObject.FindGameObjectWithTag("Player");
         CanDashBool = scriptReference.GetComponent<CharacterMovement>();
 
-        currentStamina = maxStamina;
+        CurrentStamina = maxStamina;
         staminaBar.maxValue = maxStamina;
         staminaBar.value = maxStamina;
     }
 
     private void Update()
     {     
-        if(currentStamina > 20)
+        if(CurrentStamina > 20)
         {
             CanDashBool.CanDash1 = true;
         }
@@ -47,10 +49,10 @@ public class StaminaBar : MonoBehaviour
 
     public void UseStamina(int amount)
     {
-        if(currentStamina - amount >= 0)
+        if(CurrentStamina - amount >= 0)
         {
-            currentStamina -= amount;
-            staminaBar.value = currentStamina;
+            CurrentStamina -= amount;
+            staminaBar.value = CurrentStamina;
 
             if(regen != null)
             {
@@ -68,10 +70,10 @@ public class StaminaBar : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
 
-        while(currentStamina < maxStamina)
+        while(CurrentStamina < maxStamina)
         {
-            currentStamina += maxStamina / 100;
-            staminaBar.value = currentStamina;
+            CurrentStamina += maxStamina / 100;
+            staminaBar.value = CurrentStamina;
             yield return regeneration;
         }
         regen = null;

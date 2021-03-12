@@ -5,56 +5,35 @@ using UnityEngine;
 
 public class CharacterProjectile : MonoBehaviour
 {
-    public GameObject projectile;
-    private float atkCd;
-    private Transform projDirection;
-    private Vector3 projDir;
-    private Vector3 lastDir;// = new Vector3(0,1,0);
-    private Vector3 ifnotmove;
-    private float projSpeed = 20f;
+    public GameObject myCharacter;
+    private Vector3 throwArea;
+    [SerializeField] private float projSpeed = 3f;
+    private GameObject enemy;
+    [SerializeField] private int projDmg = 30;
+    [SerializeField] private int projStaminaCost = 20;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        //projDir = GetComponent<CharacterAttack>().AttackDirection();
-        projDir = projectile.GetComponent<CharacterAttack>().AttackDirection();
-        //lastDir = projDir;
-        //lastDir = projectile.GetComponent<CharacterMovement>().dir;
+        myCharacter = GameObject.FindGameObjectWithTag("Player");
+        throwArea = myCharacter.GetComponent<CharacterAttack>().atkArea.localPosition;
+        //enemy = GameObject.FindGameObjectWithTag("Enemy");
     }
     // Update is called once per frame
     void Update()
     {
-        if (projDir.x > 0)
-        {
-            lastDir = new Vector3(1, 0, 0);
-            transform.position += lastDir.normalized * (Time.deltaTime * projSpeed);
-        }
-        else if (projDir.x < 0)
-        {
-            lastDir = new Vector3(-1, 0, 0);
-            transform.position += lastDir.normalized * (Time.deltaTime * projSpeed);
-        }
-        else if (projDir.y > 0)
-        {
-            lastDir = new Vector3(0, 1, 0);
-            transform.position += lastDir.normalized * (Time.deltaTime * projSpeed);
-        }
-        else if (projDir.y < 0)
-        {
-            lastDir = new Vector3(0, -1, 0);
-            transform.position += lastDir.normalized * (Time.deltaTime * projSpeed);
-        }
-        else
-        {
-            transform.position += lastDir.normalized * (Time.deltaTime * projSpeed);
-        }
-        
-        //if (projDir != new Vector3(0,0,0))
-        //{
-        //    lastDir = projDir;
-        //}
-        //transform.position += lastDir.normalized * (Time.deltaTime * projSpeed);
+        transform.position += throwArea * (Time.deltaTime * projSpeed);
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Enemy")
+        {
+            collision.GetComponent<EnemyBehavior>().TakeDamage(projDmg);
+            //enemy.GetComponent<EnemyBehavior>().TakeDamage(projDmg);
+            Destroy(this.gameObject);
+        }
     }
 
 
