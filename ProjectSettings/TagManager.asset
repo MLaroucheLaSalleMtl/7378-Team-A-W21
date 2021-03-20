@@ -8,6 +8,8 @@ TagManager:
   - ClosedDoor
   - PitSpawner
   - KeyTag
+  - Save
+  - Score
   layers:
   - Default
   - TransparentFX

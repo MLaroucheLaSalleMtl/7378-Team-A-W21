@@ -21,7 +21,7 @@ public class StaminaBar : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;    
+        instance = this;
     }
 
     // Start is called before the first frame update
@@ -32,12 +32,14 @@ public class StaminaBar : MonoBehaviour
 
         CurrentStamina = maxStamina;
         staminaBar.maxValue = maxStamina;
-        staminaBar.value = maxStamina;
+        staminaBar.value = currentStamina;
     }
 
     private void Update()
     {
-        if(CurrentStamina >= 20)
+        staminaBar.value = CurrentStamina;
+
+        if (CurrentStamina >= 20)
         {
             CanDashBool.CanDash1 = true;
         }
@@ -49,12 +51,12 @@ public class StaminaBar : MonoBehaviour
 
     public void UseStamina(int amount)
     {
-        if(CurrentStamina - amount >= 0)
+        if (CurrentStamina - amount >= 0)
         {
             CurrentStamina -= amount;
             staminaBar.value = CurrentStamina;
 
-            if(regen != null)
+            if (regen != null)
             {
                 StopCoroutine(regen);
             }
@@ -62,7 +64,7 @@ public class StaminaBar : MonoBehaviour
         }
         else
         {
-            
+
         }
     }
 
@@ -70,12 +72,21 @@ public class StaminaBar : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
 
-        while(CurrentStamina < maxStamina)
+        while (CurrentStamina < maxStamina)
         {
             CurrentStamina += maxStamina / 100;
             staminaBar.value = CurrentStamina;
             yield return regeneration;
         }
         regen = null;
+    }
+
+    public void GiveStamina(int amount)
+    {
+        if (CurrentStamina < maxStamina)
+        {
+            CurrentStamina += amount;
+            staminaBar.value = CurrentStamina;
+        }
     }
 }

@@ -12,8 +12,6 @@ public class HealthBar : MonoBehaviour
 
     [Header("Variables")]
     private float speed;
-    [SerializeField] private float regenAmount = 1;
-    private float totaltimepassed = 0;
 
     [Header("Slider")]
     [SerializeField] private Slider healthBar;
@@ -41,7 +39,7 @@ public class HealthBar : MonoBehaviour
     {
         currentHealth = MaxHealth;
         healthBar.maxValue = MaxHealth;
-        healthBar.value = MaxHealth;
+        healthBar.value = currentHealth;
 
         player = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<Collider2D>();
@@ -49,6 +47,12 @@ public class HealthBar : MonoBehaviour
         movement = GetComponent<CharacterMovement>();
         attack = GetComponent<CharacterAttack>();
         projectile = GetComponent<CharacterProjectile>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        healthBar.value = CurrentHealth;
     }
 
     public void TakeDamage(int damage)

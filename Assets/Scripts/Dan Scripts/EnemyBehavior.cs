@@ -45,6 +45,10 @@ public class EnemyBehavior : MonoBehaviour
     private bool isStopped = false;
     private bool isAttacking = false;
 
+    [Header("Score Purposes:")]
+    private ScoreAdded score;
+    private int addingScore = 10;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,6 +60,9 @@ public class EnemyBehavior : MonoBehaviour
         HP = maxHp;
         hpBar.GetComponent<Slider>().maxValue = maxHp;
         hpBar.GetComponent<Slider>().value = maxHp;
+
+        GameObject scoreObject = GameObject.FindGameObjectWithTag("Score");
+        score = scoreObject.GetComponent<ScoreAdded>();
     }
 
     // Update is called once per frame
@@ -66,10 +73,12 @@ public class EnemyBehavior : MonoBehaviour
 
         hpSlider.value = HP;
 
+        /*
         if (Input.GetKeyDown(KeyCode.P))
         {
             TakeDamage(20);
         }
+        */
     }
 
     void OnPatrol()
@@ -188,7 +197,7 @@ public class EnemyBehavior : MonoBehaviour
         {
             Destroy(gameObject);
             hpBar.SetActive(false);
-
+            score.GainScore(addingScore);
             if(GetComponent<KeyGiver>())
             {
                 GetComponent<KeyGiver>().GiveKey();

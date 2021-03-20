@@ -5,41 +5,57 @@ using UnityEngine.SceneManagement;
 
 public class Saving : MonoBehaviour
 {
-    private string[] Save1;
+    public bool wasLoaded = false;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        wasLoaded = (PlayerPrefs.GetInt("LoadBool") != 0);
+
+        if (wasLoaded == true)
+        {
+            Debug.Log("Loaded");
+            OnLoad();
+            wasLoaded = false;
+            PlayerPrefs.SetInt("LoadBool", (wasLoaded ? 1 : 0));
+            PlayerPrefs.Save();
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player") && SceneManager.GetActiveScene().buildIndex == 2)
+        if (collision.gameObject.CompareTag("Player") && SceneManager.GetActiveScene().buildIndex != 1)
         {
             OnSave();
+            Debug.Log("Saved");
         }
-        else if(collision.CompareTag("Player") && SceneManager.GetActiveScene().buildIndex == 1)
+        else if (collision.gameObject.CompareTag("Player") && SceneManager.GetActiveScene().buildIndex == 1)
         {
-            SceneManager.LoadScene(sceneBuildIndex: PlayerPrefs.GetInt(Save1[5]));
-            OnLoad();
-            
+            wasLoaded = true;
+            PlayerPrefs.SetInt("LoadBool", (wasLoaded ? 1 : 0));
+            PlayerPrefs.Save();
+            SceneManager.LoadScene(sceneBuildIndex: PlayerPrefs.GetInt("Scene"));
         }
     }
 
     private void OnSave()
     {
-        PlayerPrefs.SetInt(Save1[0] , (int)GameObject.FindGameObjectWithTag("Player").transform.position.x);
-        PlayerPrefs.SetInt(Save1[1], (int)GameObject.FindGameObjectWithTag("Player").transform.position.y);
-        PlayerPrefs.SetInt(Save1[2], GameObject.FindGameObjectWithTag("Player").GetComponent<Keys>().numberOfKeys);
-        PlayerPrefs.SetInt(Save1[3], (int)GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBar>().CurrentHealth);
-        PlayerPrefs.SetInt(Save1[4], GameObject.FindGameObjectWithTag("Player").GetComponent<StaminaBar>().CurrentStamina);
-        PlayerPrefs.SetInt(Save1[5], SceneManager.GetActiveScene().buildIndex);
-        Debug.Log("Saved");
+        PlayerPrefs.SetInt("PosX", (int)GameObject.FindGameObjectWithTag("Player").transform.position.x);
+        PlayerPrefs.SetInt("PosY", (int)GameObject.FindGameObjectWithTag("Player").transform.position.y);
+        PlayerPrefs.SetInt("Keys", GameObject.FindGameObjectWithTag("Player").GetComponent<Keys>().numberOfKeys);
+        PlayerPrefs.SetInt("HP", (int)GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBar>().CurrentHealth);
+        PlayerPrefs.SetInt("Stamina", GameObject.FindGameObjectWithTag("Player").GetComponent<StaminaBar>().CurrentStamina);
+        PlayerPrefs.SetInt("Scene", SceneManager.GetActiveScene().buildIndex);
+        PlayerPrefs.Save();
     }
 
     private void OnLoad()
     {
-        Vector3 position = new Vector3(PlayerPrefs.GetInt(Save1[0]), PlayerPrefs.GetInt(Save1[1]));
+        Vector3 position = new Vector3(PlayerPrefs.GetInt("PosX"), PlayerPrefs.GetInt("PosY"));
         GameObject.FindGameObjectWithTag("Player").transform.position = position;
-        GameObject.FindGameObjectWithTag("Player").GetComponent<Keys>().numberOfKeys = PlayerPrefs.GetInt(Save1[2]);
-        GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBar>().CurrentHealth = PlayerPrefs.GetInt(Save1[3]);
-        GameObject.FindGameObjectWithTag("Player").GetComponent<StaminaBar>().CurrentStamina = PlayerPrefs.GetInt(Save1[4]);
-        //SceneManager.LoadScene(sceneBuildIndex: PlayerPrefs.GetInt(Save1[5]));
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Keys>().numberOfKeys = PlayerPrefs.GetInt("Keys");
+        GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBar>().CurrentHealth = PlayerPrefs.GetInt("HP");
+        GameObject.FindGameObjectWithTag("Player").GetComponent<StaminaBar>().CurrentStamina = PlayerPrefs.GetInt("Stamina");
     }
 
 }

@@ -9,7 +9,6 @@ public class HealthRegen : MonoBehaviour
 
     [Header("Variables")]
     [SerializeField] private int healthGiven = 1;
-    private float totaltimepassed = 0;
 
     private void Start()
     {
