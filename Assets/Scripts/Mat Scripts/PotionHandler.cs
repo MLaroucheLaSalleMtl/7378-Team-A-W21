@@ -20,6 +20,13 @@ public class PotionHandler : MonoBehaviour
 
     private int healthPotionValue = 60;
     private int staminaPotionValue = 60;
+    private float speedPotionValue = 1.5f;
+    private int dmgPotionValue = 10;
+
+    private float speedTimer = 5.0f;
+    private bool isSpeed = false;
+    private float dmgTimer = 5.0f;
+    private bool isDmg = false;
 
     public static PotionHandler instance;
 
@@ -36,7 +43,17 @@ public class PotionHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButton("HealthPotion"))
+        if (speedTimer >= 0 && isSpeed)
+        {
+            speedTimer -= Time.deltaTime;
+
+        }
+        if (dmgTimer >= 0 && isDmg)
+        {
+            dmgTimer -= Time.deltaTime;
+
+        }
+        if (Input.GetButton("HealthPotion"))
         {
             if(hasHealPotion)
             {
@@ -47,7 +64,7 @@ public class PotionHandler : MonoBehaviour
 
             } 
         }
-        if(Input.GetButton("StaminaPotion"))
+        else if(Input.GetButton("StaminaPotion"))
         {
             if (hasStaminaPotion)
             {
@@ -57,7 +74,50 @@ public class PotionHandler : MonoBehaviour
                 potImage[1].SetActive(false);
             }
         }
-        if(hasHealPotion)
+        else if (Input.GetButton("SpeedPotion"))
+        {
+            if (hasSpeedPotion)
+            {
+                if(speedTimer >= 0)
+                {
+                    isSpeed = true;
+                    player.GetComponent<CharacterMovement>().Speed *= speedPotionValue;
+                    numSpeedPotion = 0;
+                    hasSpeedPotion = false;
+                    potImage[2].SetActive(false);
+                }
+
+            }
+        }
+        if (speedTimer <= 0)
+        {
+            player.GetComponent<CharacterMovement>().Speed /= speedPotionValue;
+            isSpeed = false;
+            speedTimer = 5.0f;
+        }
+        else if (Input.GetButton("DamagePotion"))
+        {
+            if (hasDamagePotion)
+            {
+                if (dmgTimer >= 0)
+                {
+                    isDmg = true;
+                    player.GetComponent<CharacterAttack>().dmg += dmgPotionValue;
+                    numDamagePotion = 0;
+                    hasDamagePotion = false;
+                    potImage[3].SetActive(false);
+                }
+
+
+            }
+        }
+        if (dmgTimer <= 0)
+        {
+            player.GetComponent<CharacterAttack>().dmg -= dmgPotionValue;
+            isDmg = false;
+            dmgTimer = 5.0f;
+        }
+        if (hasHealPotion)
             potImage[0].SetActive(true);
         if (hasStaminaPotion)
             potImage[1].SetActive(true);

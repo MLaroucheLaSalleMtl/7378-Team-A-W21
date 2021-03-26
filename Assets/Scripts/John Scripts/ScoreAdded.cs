@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ScoreAdded : MonoBehaviour
 {
-    [SerializeField] private int currentScore = 0;
+    public int currentScore = 0;
     [SerializeField] private Text scoreText;
 
     private void Start()

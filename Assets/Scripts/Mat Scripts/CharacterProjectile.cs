@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class CharacterProjectile : MonoBehaviour
 {
+    enum ProjectileType
+    {
+        Throwable,
+        Pickup
+    }
+    [SerializeField] private ProjectileType typeOfProjectile;
     public GameObject myCharacter;
     private Vector3 throwArea;
     [SerializeField] private float projSpeed = 3f;
@@ -18,20 +24,26 @@ public class CharacterProjectile : MonoBehaviour
     {
         myCharacter = GameObject.FindGameObjectWithTag("Player");
         throwArea = myCharacter.GetComponent<CharacterAttack>().atkArea.localPosition;
-        //enemy = GameObject.FindGameObjectWithTag("Enemy");
     }
     // Update is called once per frame
     void Update()
     {
-        transform.position += throwArea * (Time.deltaTime * projSpeed);
+        if(typeOfProjectile == ProjectileType.Throwable)
+        {
+            transform.position += throwArea * (Time.deltaTime * projSpeed);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy")
+        if (collision.tag == "Enemy" && typeOfProjectile == ProjectileType.Throwable)
         {
             collision.GetComponent<EnemyBehavior>().TakeDamage(projDmg);
-            //enemy.GetComponent<EnemyBehavior>().TakeDamage(projDmg);
+            Destroy(this.gameObject);
+        }
+        else if (collision.tag == "Player" && typeOfProjectile == ProjectileType.Pickup)
+        {
+            myCharacter.GetComponent<CharacterAttack>().projCount++;
             Destroy(this.gameObject);
         }
     }

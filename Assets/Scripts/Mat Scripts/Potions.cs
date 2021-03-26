@@ -33,39 +33,39 @@ public class Potions : MonoBehaviour
         {
             if (typeOfPotion == potionType.Healing)
             {
-                if (pot.hasStaminaPotion == false)
+                if (pot.hasHealPotion == false)
                 {
                     pot.numHealthPotion++;
                     pot.hasHealPotion = true;
+                    Destroy(this.gameObject);
                 }
-                Destroy(this.gameObject);
             }
-            else if (typeOfPotion == potionType.Stamina)
+            if (typeOfPotion == potionType.Stamina)
             {
                 if (pot.hasStaminaPotion == false)
                 {
                     pot.numStaminaPotion++;
                     pot.hasStaminaPotion = true;
+                    Destroy(this.gameObject);
                 }
-                Destroy(this.gameObject);
             }
-            else if (typeOfPotion == potionType.Speed)
+            if (typeOfPotion == potionType.Speed)
             {
-                if (pot.hasStaminaPotion == false)
+                if (pot.hasSpeedPotion == false)
                 {
                     pot.numSpeedPotion++;
                     pot.hasSpeedPotion = true;
+                    Destroy(this.gameObject);
                 }
-                Destroy(this.gameObject);
             }
-            else if (typeOfPotion == potionType.Damage)
+            if (typeOfPotion == potionType.Damage)
             {
-                if (pot.hasStaminaPotion == false)
+                if (pot.hasDamagePotion == false)
                 {
                     pot.numDamagePotion++;
                     pot.hasDamagePotion = true;
+                    Destroy(this.gameObject);
                 }
-                Destroy(this.gameObject);
             }
         }
     }

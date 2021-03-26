@@ -13,7 +13,7 @@ public class CharacterMovement : MonoBehaviour
     [Header("Variables")]
     [SerializeField] private float dashAmount = 3f;
     [SerializeField] private int dashCost = 20;
-    public float speed = 300.0f;
+    private float speed = 300.0f;
 
 
     [Header("Boolean")]
@@ -25,6 +25,8 @@ public class CharacterMovement : MonoBehaviour
 
 
     public bool CanDash1 { get => CanDash; set => CanDash = value; }
+    public float Speed { get => speed; set => speed = value; }
+
 
     // Start is called before the first frame update
     void Start()
@@ -41,7 +43,7 @@ public class CharacterMovement : MonoBehaviour
     private void Movement()
     {
             Vector3 pos = new Vector3();
-            pos += (dir.normalized * speed) * Time.fixedDeltaTime;
+            pos += (dir.normalized * Speed) * Time.fixedDeltaTime;
             player.velocity = pos; 
     }
 

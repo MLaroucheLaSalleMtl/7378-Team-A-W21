@@ -10,6 +10,8 @@ TagManager:
   - KeyTag
   - Save
   - Score
+  - Berzerk
+  - LevelUpPanel
   layers:
   - Default
   - TransparentFX

@@ -5,9 +5,9 @@ using UnityEngine;
 public class AcidDamage : MonoBehaviour
 {
     [Header("Variables")]
-    [SerializeField] private float slowSpeed = 100f;
-    [SerializeField] private float normalSpeed = 300f;
+    [SerializeField] private float slowSpeed = 200f;
     [SerializeField] private int poisonDamage = 1;
+
 
 
     [Header("Script References")]
@@ -18,8 +18,10 @@ public class AcidDamage : MonoBehaviour
     {
         GameObject healthReference = GameObject.FindGameObjectWithTag("Player");
         damage = healthReference.GetComponent<HealthBar>();
+        
         GameObject movementReference = GameObject.FindGameObjectWithTag("Player");
         movement = movementReference.GetComponent<CharacterMovement>();
+        
     }
 
 
@@ -28,7 +30,8 @@ public class AcidDamage : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            movement.speed = slowSpeed;
+            movement.Speed -= slowSpeed;
+            
             InvokeRepeating("PoisonDamage", 1f, 0.25f);
         }
     }
@@ -36,7 +39,7 @@ public class AcidDamage : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            movement.speed = normalSpeed;
+            movement.Speed += slowSpeed;
             CancelInvoke("PoisonDamage");
         }
     }

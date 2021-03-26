@@ -9,6 +9,7 @@ public class StaminaBar : MonoBehaviour
 
     private int maxStamina = 100;
     private int currentStamina;
+    private float regenTimer = 1.5f;
 
     private WaitForSeconds regeneration = new WaitForSeconds(0.1f);
     private Coroutine regen;
@@ -17,11 +18,16 @@ public class StaminaBar : MonoBehaviour
 
     private CharacterMovement CanDashBool;
 
-    public int CurrentStamina { get => currentStamina; set => currentStamina = value; }
+    public int CurrentStamina { get; set; }
+    public int MaxStamina { get; set; }
+    public float RegenTimer { get; set; }
 
     private void Awake()
     {
         instance = this;
+        CurrentStamina = currentStamina;
+        MaxStamina = maxStamina;
+        RegenTimer = regenTimer;
     }
 
     // Start is called before the first frame update
@@ -70,11 +76,11 @@ public class StaminaBar : MonoBehaviour
 
     private IEnumerator regenStamina()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(RegenTimer);
 
-        while (CurrentStamina < maxStamina)
+        while (CurrentStamina < MaxStamina)
         {
-            CurrentStamina += maxStamina / 100;
+            CurrentStamina += MaxStamina / 100;
             staminaBar.value = CurrentStamina;
             yield return regeneration;
         }
@@ -83,7 +89,7 @@ public class StaminaBar : MonoBehaviour
 
     public void GiveStamina(int amount)
     {
-        if (CurrentStamina < maxStamina)
+        if (CurrentStamina < MaxStamina)
         {
             CurrentStamina += amount;
             staminaBar.value = CurrentStamina;

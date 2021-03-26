@@ -175,6 +175,7 @@ GameObject:
   - component: {fileID: 238488610878307677}
   - component: {fileID: 238488610878307674}
   - component: {fileID: 238488610878307675}
+  - component: {fileID: 1810467125}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -190,7 +191,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 238488610878307672}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.48682, y: -1.8823941, z: -10}
+  m_LocalPosition: {x: 0.00000047683716, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 238488611440415910}
@@ -206,7 +207,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -247,6 +248,40 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 238488610878307672}
   m_Enabled: 1
+--- !u!114 &1810467125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238488610878307672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowDebugText: 0
+  m_ShowCameraFrustum: 1
+  m_IgnoreTimeScale: 0
+  m_WorldUpOverride: {fileID: 0}
+  m_UpdateMethod: 2
+  m_BlendUpdateMethod: 1
+  m_DefaultBlend:
+    m_Style: 1
+    m_Time: 2
+    m_CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  m_CustomBlends: {fileID: 0}
+  m_CameraCutEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_CameraActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &238488611440415907
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,11 +295,12 @@ GameObject:
   - component: {fileID: 238488611440415908}
   - component: {fileID: 238488611440415909}
   - component: {fileID: 238488611440415896}
-  - component: {fileID: 238488611440415906}
   - component: {fileID: 238488611440415897}
+  - component: {fileID: 1427938890547565136}
   - component: {fileID: 238488611440415899}
   - component: {fileID: 238488611440415898}
   - component: {fileID: 8514687529270325580}
+  - component: {fileID: 1626562523}
   m_Layer: 0
   m_Name: MyPlayer
   m_TagString: Player
@@ -354,8 +390,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.008575976, y: 0.03458163}
-  m_Size: {x: 0.65696084, y: 0.9319475}
+  m_Offset: {x: -0.0032024086, y: 0.04755971}
+  m_Size: {x: 0.63490623, y: 0.7286722}
   m_Direction: 0
 --- !u!50 &238488611440415909
 Rigidbody2D:
@@ -397,25 +433,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &238488611440415906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 238488611440415907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aceb7f91978137d4483e8841ad7ded60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  dashLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
-  dashAmount: 3
-  dashCost: 20
-  speed: 275
 --- !u!114 &238488611440415897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,12 +450,32 @@ MonoBehaviour:
   atkSize: 0.4
   ultArea: {fileID: 238488611440415910}
   ultSize: 2.2
-  ultPoof: {fileID: 0}
+  ultPoof: {fileID: 6145754130605626801}
   ultCdTimer: {fileID: 0}
+  upgradeUltCd: 15
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
-  projectile: {fileID: 0}
+  projectile: {fileID: 8105996726174127607, guid: f8d9a6a8117b4fc48a7a084da3f51bfe, type: 3}
+  dmg: 15
+--- !u!114 &1427938890547565136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238488611440415907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aceb7f91978137d4483e8841ad7ded60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  dashLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  dashAmount: 3
+  dashCost: 20
 --- !u!114 &238488611440415899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,7 +490,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 100
   maxHealth: 100
-  regenAmount: 1
+  removePoints: -5
   healthBar: {fileID: 0}
 --- !u!114 &238488611440415898
 MonoBehaviour:
@@ -481,6 +518,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfKeys: 0
+--- !u!114 &1626562523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238488611440415907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9b102391e49fb74d830626c4dc4c8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 238488611440415907}
+  potImage:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  numHealthPotion: 0
+  numStaminaPotion: 0
+  numSpeedPotion: 0
+  numDamagePotion: 0
+  hasHealPotion: 0
+  hasStaminaPotion: 0
+  hasSpeedPotion: 0
+  hasDamagePotion: 0
 --- !u!1 &5185896518380238535
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,7 +570,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5185896518380238535}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.94, y: -23.43, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 238488611440415910}
@@ -1227,7 +1290,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 2.2
+      value: 1.5
       mode: 0
       spread: 0
       speed:
@@ -5317,7 +5380,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0

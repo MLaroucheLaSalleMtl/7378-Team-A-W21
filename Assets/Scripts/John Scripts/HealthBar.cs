@@ -12,6 +12,7 @@ public class HealthBar : MonoBehaviour
 
     [Header("Variables")]
     private float speed;
+    [SerializeField] private int removePoints = -5;
 
     [Header("Slider")]
     [SerializeField] private Slider healthBar;
@@ -24,21 +25,22 @@ public class HealthBar : MonoBehaviour
     private CharacterAttack attack;
     private CharacterProjectile projectile;
     public static HealthBar instance;
-
+    private ScoreAdded score;
 
     public float CurrentHealth { get; set; }
-    public float MaxHealth { get => maxHealth; set => maxHealth = value; }
+    public float MaxHealth { get; set; }
 
     private void Awake()
     {
         instance = this;
         CurrentHealth = currentHealth;
+        MaxHealth = maxHealth;
     }
 
     private void Start()
     {
-        currentHealth = MaxHealth;
-        healthBar.maxValue = MaxHealth;
+        currentHealth = maxHealth;
+        healthBar.maxValue = maxHealth;
         healthBar.value = currentHealth;
 
         player = GetComponent<Rigidbody2D>();
@@ -47,6 +49,9 @@ public class HealthBar : MonoBehaviour
         movement = GetComponent<CharacterMovement>();
         attack = GetComponent<CharacterAttack>();
         projectile = GetComponent<CharacterProjectile>();
+
+        GameObject scoreObject = GameObject.FindGameObjectWithTag("Score");
+        score = scoreObject.GetComponent<ScoreAdded>();
     }
 
     // Update is called once per frame
@@ -65,6 +70,7 @@ public class HealthBar : MonoBehaviour
         CurrentHealth -= damage;
         healthBar.value = CurrentHealth;
         CamShake.instance.ShakeCam(3f, 0.05f);
+        score.GainScore(removePoints);
 
         if (CurrentHealth <= 0)
         {
