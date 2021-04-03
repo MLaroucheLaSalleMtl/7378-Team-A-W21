@@ -220,7 +220,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1929451197784058355
 Transform:
   m_ObjectHideFlags: 0
@@ -373,7 +373,7 @@ MonoBehaviour:
   atkCounter: 0.75
   pursuitSpeed: 4
   playerFoundDistance: 7
-  stopDistance: 5
+  stopDistance: 0
   lockedIn: 0
   ultiCounter: 3
 --- !u!1 &1929451198055149150

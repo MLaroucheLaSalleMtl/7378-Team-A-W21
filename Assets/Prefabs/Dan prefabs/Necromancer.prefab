@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8988715299899805759}
   - component: {fileID: 8988715299899805756}
-  - component: {fileID: 8988715299899805757}
   - component: {fileID: 8988715299899805744}
   - component: {fileID: 8988715299899805758}
   - component: {fileID: 8988715299899805745}
@@ -86,38 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8988715299899805757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8988715299899805754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e46707bd2a0031c4180842cd454f71eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHp: 3
-  hpBar: {fileID: 0}
-  hpSlider: {fileID: 0}
-  attack: 10
-  speed: 10
-  rangedEnemy: 1
-  isBoss: 0
-  patrolSpeed: 2
-  patrolPoint:
-  - {fileID: 0}
-  - {fileID: 0}
-  patrolCounter: 3
-  rangedWeapon: {fileID: 7343609932744562547, guid: 7512494aac4f2394d89f8e29bf829aa0, type: 3}
-  atkCounter: 0.75
-  pursuitSpeed: 4
-  playerFoundDistance: 5
-  stopDistance: 3
-  abandonDistance: 10
-  ultimate: []
-  ultiCounter: 0
 --- !u!61 &8988715299899805744
 BoxCollider2D:
   m_ObjectHideFlags: 0

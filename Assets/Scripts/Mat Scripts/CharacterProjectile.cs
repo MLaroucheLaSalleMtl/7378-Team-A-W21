@@ -36,9 +36,17 @@ public class CharacterProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy" && typeOfProjectile == ProjectileType.Throwable)
+        if (collision.tag == "Enemy" && typeOfProjectile == ProjectileType.Throwable || collision.tag == "Berzerk" && typeOfProjectile == ProjectileType.Throwable)
         {
-            collision.GetComponent<EnemyBehavior>().TakeDamage(projDmg);
+            if(collision.tag == "Enemy")
+            {
+                collision.GetComponent<EnemyBehavior>().TakeDamage(projDmg);
+            }
+            else if(collision.tag == "Berzerk")
+            {
+                collision.GetComponent<BerzerkerBehaviour>().TakeDamage(projDmg);
+            }
+
             Destroy(this.gameObject);
         }
         else if (collision.tag == "Player" && typeOfProjectile == ProjectileType.Pickup)

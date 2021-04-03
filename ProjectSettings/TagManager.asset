@@ -12,6 +12,7 @@ TagManager:
   - Score
   - Berzerk
   - LevelUpPanel
+  - Shield
   layers:
   - Default
   - TransparentFX

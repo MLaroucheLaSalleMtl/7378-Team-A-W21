@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BerzerkerBehaviour : MonoBehaviour
+public class NecromancerBehaviour : MonoBehaviour
 {
     [Header("Enemy Options:")]
     private int HP;
@@ -22,10 +22,6 @@ public class BerzerkerBehaviour : MonoBehaviour
     [SerializeField] public float playerFoundDistance;
     [SerializeField] public float stopDistance;
     [SerializeField] public bool lockedIn = false;
-    [Header("Ultimate Attack:")]
-    [SerializeField] public float ultiCounter;
-    private float ultiWait;
-    private bool isUlt = false;
 
     private Transform player;
     Rigidbody2D rigid;
@@ -33,8 +29,7 @@ public class BerzerkerBehaviour : MonoBehaviour
     Vector2 direction = new Vector2();
     private bool isStopped = false;
     private bool isAttacking = false;
-
-    public int Hp { get => HP;}
+    private bool isShielded = true;
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +38,6 @@ public class BerzerkerBehaviour : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         atkWait = atkCounter;
-        ultiWait = ultiCounter;
         HP = maxHp;
         hpBar.GetComponent<Slider>().maxValue = maxHp;
         hpBar.GetComponent<Slider>().value = maxHp;
@@ -62,7 +56,7 @@ public class BerzerkerBehaviour : MonoBehaviour
     {
         direction = (player.transform.position - transform.position).normalized;
 
-        if(lockedIn)
+        if (lockedIn)
         {
             transform.position = Vector2.MoveTowards(transform.position, player.position, pursuitSpeed * Time.deltaTime);
         }
@@ -72,7 +66,6 @@ public class BerzerkerBehaviour : MonoBehaviour
             isStopped = false;
             isAttacking = false;
             lockedIn = true;
-            isUlt = false;
 
             hpBar.SetActive(true);
         }
@@ -81,12 +74,7 @@ public class BerzerkerBehaviour : MonoBehaviour
             transform.position = this.transform.position;
             isStopped = true;
             lockedIn = false;
-            //OnAttack();
-
-            if (isBoss == true)
-            {
-                OnUltimate();
-            }
+            OnAttack();
         }
     }
 
@@ -102,26 +90,6 @@ public class BerzerkerBehaviour : MonoBehaviour
         {
             atkWait -= Time.deltaTime;
             isAttacking = false;
-            isUlt = false;
-        }
-    }
-
-    void OnUltimate()
-    {
-        if (ultiWait <= 0)
-        {
-            ultiWait = ultiCounter;
-            isAttacking = true;
-            isUlt = true;
-            pursuitSpeed = pursuitSpeed * 10;
-            //transform.position = Vector2.MoveTowards(transform.position, player.position, pursuitSpeed * Time.deltaTime);
-            //transform.position = Vector2.Lerp(transform.position, player.position, Mathf.PingPong(Time.deltaTime * pursuitSpeed, 3f));
-        }
-        else
-        {
-            ultiWait -= Time.deltaTime;
-            isAttacking = false;
-            isUlt = false;
         }
     }
 
@@ -135,21 +103,15 @@ public class BerzerkerBehaviour : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        HP -= damage;
-
-        if (HP <= 0)
+       if(isShielded == false)
         {
-            Destroy(gameObject);
-            hpBar.SetActive(false);
-        }
-    }
+            HP -= damage;
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.collider.CompareTag("Player")) //&& isUlt)
-        {
-            collision.collider.GetComponent<HealthBar>().TakeDamage(40);
-            ultiWait = ultiCounter;
+            if (HP <= 0)
+            {
+                Destroy(gameObject);
+                hpBar.SetActive(false);
+            }
         }
     }
 }

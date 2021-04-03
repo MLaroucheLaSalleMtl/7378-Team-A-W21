@@ -8,13 +8,13 @@ using UnityEngine.UI;
 public class CharacterAttack : MonoBehaviour
 {
     [Header("Attack Area")]
-    public GameObject sword;
     [SerializeField] public Transform atkArea;
     [SerializeField] private float atkSize;
     private float atkCd;
     Vector2 direction = new Vector2();
     private bool isAttacking = false;
     Animator anim;
+    public int dmg = 15;
 
     [Header("Ultimate Area")]
     [SerializeField] private Transform ultArea;
@@ -33,15 +33,21 @@ public class CharacterAttack : MonoBehaviour
     [SerializeField] public GameObject projectile;
     private int staminaThrow = 20;
     private float projCd;
-    public int maxProjCount = 5;
+    public int maxProjCount = 3;
     public int projCount;
+    [SerializeField] private Text projCounter;
 
-    public int dmg = 15;
+    [Header("Audio")]
+    [SerializeField] private AudioClip stabSound;
+    [SerializeField] private AudioClip missSound;
+
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        projCount = maxProjCount;
+        projCounter.text = projCount.ToString("0");
     }
 
     // Update is called once per frame
@@ -50,28 +56,8 @@ public class CharacterAttack : MonoBehaviour
         anim.SetBool("IsAttack", isAttacking);
         AttackDirection();
         OnAttack();
-
         canUseStamina = GetComponent<CharacterMovement>().CanDash1;
-        if (atkCd >= 0)
-        {
-            atkCd -= Time.deltaTime;
-
-        }
-        if (projCd >= 0)
-        {
-            projCd -= Time.deltaTime;
-        }
-        if (ultCd >= 0)
-        {
-            ultCd -= Time.deltaTime;
-            ultCdTimer.gameObject.SetActive(true);
-            ultCdTimer.text = "Ultimate Cooldown: " + ultCd.ToString("0");
-        }
-        else
-        {
-            ultCdTimer.gameObject.SetActive(false);
-        }
-        
+        CooldownTimer();
     }
     private void OnAttack()
     {
@@ -80,25 +66,28 @@ public class CharacterAttack : MonoBehaviour
             
             if (Input.GetButton("Fire1") && atkCd <= 0)
             {
+                AudioClipManager.instance.PlayHitSound(missSound);
                 atkCd = 0.3f;
                 isAttacking = true;
                 anim.SetBool("IsAttack", isAttacking);
-                sword.SetActive(true);
                 Collider2D[] enemies = Physics2D.OverlapCircleAll(atkArea.position, atkSize, enemyLayer);
                 for (int i = 0; i < enemies.Length; i++)
                 {
                     Transform enemyTrans = enemies[i].GetComponent<Transform>();
                     if(enemies[i].CompareTag("Enemy"))
                     {
+                        AudioClipManager.instance.PlayHitSound(stabSound);
                         enemies[i].GetComponent<EnemyBehavior>().TakeDamage(dmg);
                     }
                     else if(enemies[i].CompareTag("Berzerk"))
                     {
+                        AudioClipManager.instance.PlayHitSound(stabSound);
                         enemies[i].GetComponent<BerzerkerBehaviour>().TakeDamage(dmg);
                     }
                     Vector2 knock = enemyTrans.position - transform.position;
                     enemyTrans.position = new Vector2(enemyTrans.position.x + knock.x, enemyTrans.position.y + knock.y);
                 }
+                
             }
             if (Input.GetButton("Ultimate") && ultCd <= 0 && canUseStamina == true)
             {
@@ -108,10 +97,17 @@ public class CharacterAttack : MonoBehaviour
                 Collider2D[] enemies = Physics2D.OverlapCircleAll(ultArea.position, ultSize, enemyLayer);
                 for (int i = 0; i < enemies.Length; i++)
                 {
-                    enemies[i].GetComponent<EnemyBehavior>().TakeDamage(dmg*3);
+                    if (enemies[i].CompareTag("Enemy"))
+                    {
+                        enemies[i].GetComponent<EnemyBehavior>().TakeDamage(dmg*3);
+                    }
+                    else if (enemies[i].CompareTag("Berzerk"))
+                    {
+                        enemies[i].GetComponent<BerzerkerBehaviour>().TakeDamage(dmg*3);
+                    }
                 }
             }
-            if (Input.GetButton("Fire2") && projCd <= 0 && canUseStamina == true)
+            if (Input.GetButton("Fire2") && projCd <= 0 && canUseStamina == true && projCount > 0)
             {
                 projCd = 1.0f;
                 float rotate = 0f;
@@ -134,7 +130,9 @@ public class CharacterAttack : MonoBehaviour
                 }
                 StaminaBar.instance.UseStamina(staminaThrow);
                 GameObject proj = Instantiate(projectile, atkArea.transform.position, Quaternion.Euler (0, 0, rotate), null);
-             
+                projCount--;
+                projCounter.text = projCount.ToString("0");
+
 
                 Debug.Log("x " + atkArea.localPosition.x + " y " + atkArea.localPosition.y);
             }
@@ -180,6 +178,29 @@ public class CharacterAttack : MonoBehaviour
     public void SetAttackBool()
     {
         isAttacking = false;
+    }
+
+    private void CooldownTimer()
+    {
+        if (atkCd >= 0)
+        {
+            atkCd -= Time.deltaTime;
+
+        }
+        if (projCd >= 0)
+        {
+            projCd -= Time.deltaTime;
+        }
+        if (ultCd >= 0)
+        {
+            ultCd -= Time.deltaTime;
+            ultCdTimer.gameObject.SetActive(true);
+            ultCdTimer.text = ultCd.ToString("0");
+        }
+        else
+        {
+            ultCdTimer.gameObject.SetActive(false);
+        }
     }
 
 }

@@ -6,11 +6,22 @@ using UnityEngine.UI;
 public class LevelUpButtonHandler : MonoBehaviour
 {
     [Header("Variables")]
-    [SerializeField] private Text experienceText; 
     [SerializeField] private int scoreDivider = 2;
     [SerializeField] private int endLevelScore;
     private Vector2 currentHealthRect;
     private Vector2 currentStaminaRect;
+
+    [Header("Texts")]
+    [SerializeField] private Text experienceText;
+    [SerializeField] private Text healthCostText;
+    [SerializeField] private Text staminaCostText;
+    [SerializeField] private Text staminaRegenCostText;
+    [SerializeField] private Text attackCostText;
+    [SerializeField] private Text ultCostText;
+    [SerializeField] private Text healthPotionCostText;
+    [SerializeField] private Text staminaPotionCostText;
+    [SerializeField] private Text damageUpCostText;
+    [SerializeField] private Text speedUpCostText;
 
     [Header("Experience Costs")]
     [SerializeField] private int experienceCostHealth = 100;
@@ -89,6 +100,7 @@ public class LevelUpButtonHandler : MonoBehaviour
             healthRectTransform.sizeDelta = currentHealthRect;
 
             experienceText.text = "Experience Points: " + endLevelScore.ToString();
+            healthCostText.text = "Cost: " + experienceCostHealth.ToString();
         }
     }
 
@@ -108,6 +120,7 @@ public class LevelUpButtonHandler : MonoBehaviour
             staminaRectTransform.sizeDelta = currentStaminaRect;
 
             experienceText.text = "Experience Points: " + endLevelScore.ToString();
+            staminaCostText.text = "Cost: " + experienceCostStamina.ToString();
         }
     }
 
@@ -121,6 +134,7 @@ public class LevelUpButtonHandler : MonoBehaviour
             attack.upgradeUltCd -= 2.5f;
 
             experienceText.text = "Experience Points: " + endLevelScore.ToString();
+            ultCostText.text = "Cost: " + experienceCostUlt.ToString();
         }     
     }
 
@@ -134,6 +148,7 @@ public class LevelUpButtonHandler : MonoBehaviour
             attack.dmg += 1;
 
             experienceText.text = "Experience Points: " + endLevelScore.ToString();
+            attackCostText.text = "Cost: " + experienceCostAttack.ToString();
         }      
     }
 
@@ -147,6 +162,7 @@ public class LevelUpButtonHandler : MonoBehaviour
             stamina.RegenTimer -= 0.25f;
 
             experienceText.text = "Experience Points: " + endLevelScore.ToString();
+            staminaRegenCostText.text = "Cost: " + experienceCostRegen.ToString();
         }
         
     }
@@ -161,6 +177,7 @@ public class LevelUpButtonHandler : MonoBehaviour
             potions.hasHealPotion = true;
 
             experienceText.text = "Experience Points: " + endLevelScore.ToString();
+            healthPotionCostText.text = "Cost: " + experienceCostHealthPotion.ToString();
         }
     }
 
@@ -174,6 +191,7 @@ public class LevelUpButtonHandler : MonoBehaviour
             potions.hasStaminaPotion = true;
 
             experienceText.text = "Experience Points: " + endLevelScore.ToString();
+            staminaPotionCostText.text = "Cost: " + experienceCostStaminaPotion.ToString();
         }
     }
 
@@ -187,6 +205,7 @@ public class LevelUpButtonHandler : MonoBehaviour
             potions.hasDamagePotion = true;
 
             experienceText.text = "Experience Points: " + endLevelScore.ToString();
+            damageUpCostText.text = "Cost: " + experienceCostAttackPotion.ToString();
         }
     }
 
@@ -200,6 +219,7 @@ public class LevelUpButtonHandler : MonoBehaviour
             potions.hasSpeedPotion = true;
 
             experienceText.text = "Experience Points: " + endLevelScore.ToString();
+            speedUpCostText.text = "Cost: " + experienceCostSpeedPotion.ToString();
         }
     }
 }

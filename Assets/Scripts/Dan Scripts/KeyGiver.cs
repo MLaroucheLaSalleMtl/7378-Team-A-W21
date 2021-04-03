@@ -9,7 +9,7 @@ public class KeyGiver : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        keyCounter.text = "Keys: " + GameObject.FindGameObjectWithTag("Player").GetComponent<Keys>().numberOfKeys.ToString("0");
+        keyCounter.text = GameObject.FindGameObjectWithTag("Player").GetComponent<Keys>().numberOfKeys.ToString("0");
     }
 
     // Update is called once per frame
@@ -21,7 +21,7 @@ public class KeyGiver : MonoBehaviour
     public void GiveKey()
     {
         GameObject.FindGameObjectWithTag("Player").GetComponent<Keys>().numberOfKeys++;
-        keyCounter.text = "Keys: " + GameObject.FindGameObjectWithTag("Player").GetComponent<Keys>().numberOfKeys.ToString("0");
+        keyCounter.text = GameObject.FindGameObjectWithTag("Player").GetComponent<Keys>().numberOfKeys.ToString("0");
     }
 
 }

@@ -20,6 +20,9 @@ public class CharacterMovement : MonoBehaviour
     private bool isDashing = false;
     private bool CanDash;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip dashSound;
+
     Vector3 dir = new Vector3();
 
 
@@ -55,6 +58,7 @@ public class CharacterMovement : MonoBehaviour
         if (Input.GetButtonDown("Dash") && CanDash1 == true && player.velocity.magnitude > 0)
         {
             isDashing = true;
+            AudioClipManager.instance.PlayHitSound(dashSound);
         }
     }
 

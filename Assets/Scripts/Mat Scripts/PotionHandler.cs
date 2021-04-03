@@ -30,6 +30,8 @@ public class PotionHandler : MonoBehaviour
 
     public static PotionHandler instance;
 
+    [SerializeField] private AudioClip drinkSound;
+
     private void Awake()
     {
         instance = this;
@@ -61,6 +63,7 @@ public class PotionHandler : MonoBehaviour
                 numHealthPotion = 0;
                 hasHealPotion = false;
                 potImage[0].SetActive(false);
+                AudioClipManager.instance.PlayHitSound(drinkSound);
 
             } 
         }
@@ -72,6 +75,7 @@ public class PotionHandler : MonoBehaviour
                 numStaminaPotion = 0;
                 hasStaminaPotion = false;
                 potImage[1].SetActive(false);
+                AudioClipManager.instance.PlayHitSound(drinkSound);
             }
         }
         else if (Input.GetButton("SpeedPotion"))
@@ -85,6 +89,7 @@ public class PotionHandler : MonoBehaviour
                     numSpeedPotion = 0;
                     hasSpeedPotion = false;
                     potImage[2].SetActive(false);
+                    AudioClipManager.instance.PlayHitSound(drinkSound);
                 }
 
             }
@@ -106,6 +111,7 @@ public class PotionHandler : MonoBehaviour
                     numDamagePotion = 0;
                     hasDamagePotion = false;
                     potImage[3].SetActive(false);
+                    AudioClipManager.instance.PlayHitSound(drinkSound);
                 }
 
 
