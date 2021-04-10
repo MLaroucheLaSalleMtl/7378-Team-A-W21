@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class BerzerkerBehaviour : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class BerzerkerBehaviour : MonoBehaviour
     private float ultiWait;
     private bool isUlt = false;
 
+    private NavMeshAgent agent;
     private Transform player;
     Rigidbody2D rigid;
     Animator anim;
@@ -39,6 +41,11 @@ public class BerzerkerBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Code to make navmesh2D to work (doesnt let the sprite rotate like paper mario)
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
+
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -64,7 +71,8 @@ public class BerzerkerBehaviour : MonoBehaviour
 
         if(lockedIn)
         {
-            transform.position = Vector2.MoveTowards(transform.position, player.position, pursuitSpeed * Time.deltaTime);
+            //transform.position = Vector2.MoveTowards(transform.position, player.position, pursuitSpeed * Time.deltaTime);
+            agent.SetDestination(player.position);
         }
 
         if (Vector2.Distance(transform.position, player.position) < playerFoundDistance && Vector2.Distance(transform.position, player.position) > stopDistance)
@@ -127,8 +135,8 @@ public class BerzerkerBehaviour : MonoBehaviour
 
     void Animate()
     {
-        anim.SetFloat("X", direction.x);
-        anim.SetFloat("Y", direction.y);
+        anim.SetFloat("X", agent.velocity.x/*direction.x*/);
+        anim.SetFloat("Y", agent.velocity.y/*direction.y*/);
         anim.SetBool("IsStopped", isStopped);
         anim.SetBool("IsAttacking", isAttacking);
     }

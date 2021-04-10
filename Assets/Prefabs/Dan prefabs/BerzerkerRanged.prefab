@@ -373,7 +373,7 @@ MonoBehaviour:
   atkCounter: 0.75
   pursuitSpeed: 4
   playerFoundDistance: 5
-  stopDistance: 3
+  stopDistance: 0
   lockedIn: 0
   ultiCounter: 0
 --- !u!1 &3041595744262935419

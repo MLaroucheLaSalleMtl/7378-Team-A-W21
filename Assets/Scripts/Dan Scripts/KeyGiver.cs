@@ -15,13 +15,26 @@ public class KeyGiver : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void GiveKey()
     {
         GameObject.FindGameObjectWithTag("Player").GetComponent<Keys>().numberOfKeys++;
+        RefreshKey();
+    }
+
+    public void RefreshKey()
+    {
         keyCounter.text = GameObject.FindGameObjectWithTag("Player").GetComponent<Keys>().numberOfKeys.ToString("0");
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Keys")
+        {
+            GiveKey();
+            Destroy(collision.gameObject);
+        }
+    }
 }

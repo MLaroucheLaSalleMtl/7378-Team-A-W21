@@ -37,6 +37,10 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] public GameObject[] ultimate;
     [SerializeField] public float ultiCounter;
     private float ultiWait;
+    [Space]
+    [Header("Keys")]
+    [SerializeField] public GameObject key;
+    [SerializeField] public bool keyHolder;
 
     private Transform player;
     Rigidbody2D rigid;
@@ -198,9 +202,9 @@ public class EnemyBehavior : MonoBehaviour
             Destroy(gameObject);
             hpBar.SetActive(false);
             score.GainScore(addingScore);
-            if(GetComponent<KeyGiver>())
+            if(keyHolder)
             {
-                GetComponent<KeyGiver>().GiveKey();
+                Instantiate(key, transform.position, transform.rotation);
             }
         }
     }

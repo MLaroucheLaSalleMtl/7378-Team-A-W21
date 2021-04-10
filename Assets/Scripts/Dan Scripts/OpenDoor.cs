@@ -23,6 +23,11 @@ public class OpenDoor : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && GameObject.FindGameObjectWithTag("Player").GetComponent<Keys>().numberOfKeys >= keysRequired)
         {
             gameObject.SetActive(false);
+            if(keysRequired == 1)
+            {
+                GameObject.FindGameObjectWithTag("Player").GetComponent<Keys>().numberOfKeys--;
+                GameObject.FindGameObjectWithTag("Player").GetComponent<KeyGiver>().RefreshKey();
+            }
         }
     }
 

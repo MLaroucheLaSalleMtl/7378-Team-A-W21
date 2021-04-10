@@ -935,6 +935,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BerzerkerBoss
       objectReference: {fileID: 0}
+    - target: {fileID: 1929451197784058361, guid: fe109d6cf6062f44897dce0f6ab1fa80, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe109d6cf6062f44897dce0f6ab1fa80, type: 3}
 --- !u!1001 &9191919574465553501

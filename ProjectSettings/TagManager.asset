@@ -13,6 +13,7 @@ TagManager:
   - Berzerk
   - LevelUpPanel
   - Shield
+  - Keys
   layers:
   - Default
   - TransparentFX
