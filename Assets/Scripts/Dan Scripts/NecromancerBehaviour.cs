@@ -22,6 +22,10 @@ public class NecromancerBehaviour : MonoBehaviour
     [SerializeField] public float playerFoundDistance;
     [SerializeField] public float stopDistance;
     [SerializeField] public bool lockedIn = false;
+    [Space]
+    [Header("Keys")]
+    [SerializeField] public GameObject key;
+    [SerializeField] public bool keyHolder;
 
     private Transform player;
     Rigidbody2D rigid;
@@ -29,7 +33,7 @@ public class NecromancerBehaviour : MonoBehaviour
     Vector2 direction = new Vector2();
     private bool isStopped = false;
     private bool isAttacking = false;
-    private bool isShielded = true;
+    public bool isShielded = true;
 
     // Start is called before the first frame update
     void Start()
@@ -54,12 +58,12 @@ public class NecromancerBehaviour : MonoBehaviour
 
     void OnPursuit()
     {
-        direction = (player.transform.position - transform.position).normalized;
+        /*direction = (player.transform.position - transform.position).normalized;
 
         if (lockedIn)
         {
             transform.position = Vector2.MoveTowards(transform.position, player.position, pursuitSpeed * Time.deltaTime);
-        }
+        }*/
 
         if (Vector2.Distance(transform.position, player.position) < playerFoundDistance && Vector2.Distance(transform.position, player.position) > stopDistance)
         {
@@ -104,14 +108,18 @@ public class NecromancerBehaviour : MonoBehaviour
     public void TakeDamage(int damage)
     {
        if(isShielded == false)
-        {
+       {
             HP -= damage;
 
             if (HP <= 0)
             {
                 Destroy(gameObject);
                 hpBar.SetActive(false);
+                if (keyHolder)
+                {
+                    Instantiate(key, transform.position, transform.rotation);
+                }
             }
-        }
+       }
     }
 }

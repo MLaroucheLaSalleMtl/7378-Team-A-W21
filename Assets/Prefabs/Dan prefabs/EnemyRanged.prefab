@@ -214,6 +214,7 @@ GameObject:
   - component: {fileID: 3041595744008557787}
   - component: {fileID: 3041595744008557786}
   - component: {fileID: 3041595744008557789}
+  - component: {fileID: -6951796548646502235}
   m_Layer: 6
   m_Name: EnemyRanged
   m_TagString: Enemy
@@ -319,6 +320,8 @@ MonoBehaviour:
   abandonDistance: 10
   ultimate: []
   ultiCounter: 0
+  key: {fileID: 0}
+  keyHolder: 0
 --- !u!61 &3041595744008557787
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -385,6 +388,28 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!195 &-6951796548646502235
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3041595744008557788}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 3
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &3041595744262935419
 GameObject:
   m_ObjectHideFlags: 0

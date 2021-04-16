@@ -71,7 +71,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 6
   m_Sprite: {fileID: 1623967759686947102, guid: d473237f97808b144bd0e57ed4d7860f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -112,6 +112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4373947597314169668}
   - component: {fileID: 4373947597314169675}
+  - component: {fileID: -2380297149580021963}
   m_Layer: 0
   m_Name: Projectile PickUp
   m_TagString: Untagged
@@ -160,3 +161,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.83863646, y: 0.563488}
   m_EdgeRadius: 0
+--- !u!114 &-2380297149580021963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4373947597314169669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85e37d7f7980025439a0db7821b9958b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeOfProjectile: 1
+  myCharacter: {fileID: 0}
+  projSpeed: 3
+  projDmg: 30
+  projStaminaCost: 20

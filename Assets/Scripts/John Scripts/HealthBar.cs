@@ -19,13 +19,13 @@ public class HealthBar : MonoBehaviour
 
     [Header("Settings")]
     private Rigidbody2D player;
-    private Collider2D playerCollider;
-    private SpriteRenderer sprite;
-    private CharacterMovement movement;
-    private CharacterAttack attack;
-    private CharacterProjectile projectile;
     public static HealthBar instance;
     private ScoreAdded score;
+    //private Collider2D playerCollider;
+    //private SpriteRenderer sprite;
+    //private CharacterMovement movement;
+    //private CharacterAttack attack;
+    //private CharacterProjectile projectile;
 
     public float CurrentHealth { get; set; }
     public float MaxHealth { get; set; }
@@ -43,12 +43,12 @@ public class HealthBar : MonoBehaviour
         healthBar.maxValue = maxHealth;
         healthBar.value = currentHealth;
 
-        player = GetComponent<Rigidbody2D>();
-        playerCollider = GetComponent<Collider2D>();
-        sprite = GetComponent<SpriteRenderer>();
-        movement = GetComponent<CharacterMovement>();
-        attack = GetComponent<CharacterAttack>();
-        projectile = GetComponent<CharacterProjectile>();
+        //player = GetComponent<Rigidbody2D>();
+        //playerCollider = GetComponent<Collider2D>();
+        //sprite = GetComponent<SpriteRenderer>();
+        //movement = GetComponent<CharacterMovement>();
+        //attack = GetComponent<CharacterAttack>();
+        //projectile = GetComponent<CharacterProjectile>();
 
         GameObject scoreObject = GameObject.FindGameObjectWithTag("Score");
         score = scoreObject.GetComponent<ScoreAdded>();
@@ -89,7 +89,7 @@ public class HealthBar : MonoBehaviour
 
     private void Die()
     {
-        SceneManager.LoadScene(sceneBuildIndex: 4);
+        SceneManager.LoadScene(sceneBuildIndex: 6);
 
         if (player != null)
         {
@@ -97,11 +97,11 @@ public class HealthBar : MonoBehaviour
             float y = Input.GetAxis("Vertical");
             player.velocity = new Vector2(x * speed, y * speed);
 
-            playerCollider.enabled = false;
-            sprite.enabled = false;
-            movement.enabled = false;
-            attack.enabled = false;
-            projectile.enabled = false;
+            //playerCollider.enabled = false;
+            //sprite.enabled = false;
+            //movement.enabled = false;
+            //attack.enabled = false;
+            //projectile.enabled = false;
         }   
     }
 }

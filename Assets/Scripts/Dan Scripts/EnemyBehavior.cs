@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class EnemyBehavior : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] public float speed;
     [SerializeField] public bool rangedEnemy;
     [SerializeField] public bool isBoss;
+    [SerializeField] public bool isFinal;
     [Space]
     [Header("Patrol Options:")]
     [SerializeField] public float patrolSpeed;
@@ -42,6 +44,7 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] public GameObject key;
     [SerializeField] public bool keyHolder;
 
+    private NavMeshAgent agent;
     private Transform player;
     Rigidbody2D rigid;
     Animator anim;
@@ -51,11 +54,17 @@ public class EnemyBehavior : MonoBehaviour
 
     [Header("Score Purposes:")]
     private ScoreAdded score;
-    private int addingScore = 10;
+    private int bossScore = 200;
+    private int addingScore = 20;
 
     // Start is called before the first frame update
     void Start()
     {
+        //Code to make navmesh2D to work (doesnt let the sprite rotate like paper mario)
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
+
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -76,19 +85,13 @@ public class EnemyBehavior : MonoBehaviour
         OnPursuit();
 
         hpSlider.value = HP;
-
-        /*
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            TakeDamage(20);
-        }
-        */
     }
 
     void OnPatrol()
     {
         transform.position = Vector2.MoveTowards(transform.position, patrolPoint[points].position, patrolSpeed * Time.deltaTime);
         direction = (patrolPoint[points].transform.position - transform.position).normalized;
+        //agent.SetDestination(patrolPoint[points].position); ;
 
         if (Vector2.Distance(transform.position, patrolPoint[points].position) < 0.2f)
         {
@@ -160,7 +163,8 @@ public class EnemyBehavior : MonoBehaviour
         {
             isStopped = false;
             isAttacking = false;
-            transform.position = Vector2.MoveTowards(transform.position, player.position, pursuitSpeed * Time.deltaTime);
+            //transform.position = Vector2.MoveTowards(transform.position, player.position, pursuitSpeed * Time.deltaTime);
+            agent.SetDestination(player.position);
 
             hpBar.SetActive(true);
         }
@@ -187,6 +191,8 @@ public class EnemyBehavior : MonoBehaviour
 
     void Animate()
     {
+        anim.SetFloat("X", agent.velocity.x);
+        anim.SetFloat("Y", agent.velocity.y);
         anim.SetFloat("X", direction.x);
         anim.SetFloat("Y", direction.y);
         anim.SetBool("IsStopped", isStopped);
@@ -199,9 +205,20 @@ public class EnemyBehavior : MonoBehaviour
 
         if(HP <= 0)
         {
+            if(isFinal == true)
+            {
+                gameObject.GetComponent<SummonedDeath>().OnDeath();
+            }
             Destroy(gameObject);
+            if (isBoss == true)
+            {
+                score.GainScore(bossScore);
+            }
+            else
+            {
+                score.GainScore(addingScore);
+            }
             hpBar.SetActive(false);
-            score.GainScore(addingScore);
             if(keyHolder)
             {
                 Instantiate(key, transform.position, transform.rotation);

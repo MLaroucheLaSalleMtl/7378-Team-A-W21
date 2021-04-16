@@ -8,13 +8,22 @@ public class ScoreAdded : MonoBehaviour
     public int currentScore = 0;
     [SerializeField] private Text scoreText;
 
-    private void Start()
+    public Text ScoreText { get => scoreText; set => scoreText = value; }
+
+    private void Update()
     {
         scoreText.text = "Score: " + currentScore.ToString();
     }
+
+    private void Start()
+    {
+        ScoreText = scoreText;
+        ScoreText.text = "Score: " + currentScore.ToString();
+    }
+
     public void GainScore(int score)
     {
         currentScore += score;
-        scoreText.text = "Score: " + currentScore.ToString();
+        ScoreText.text = "Score: " + currentScore.ToString();
     }
 }

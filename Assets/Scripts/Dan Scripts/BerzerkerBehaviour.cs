@@ -12,6 +12,7 @@ public class BerzerkerBehaviour : MonoBehaviour
     [SerializeField] public GameObject hpBar;
     [SerializeField] public Slider hpSlider;
     [SerializeField] public bool isBoss;
+    [SerializeField] public bool isFinal;
     [Space]
     [Header("Attack Options:")]
     [SerializeField] public GameObject rangedWeapon;
@@ -27,6 +28,15 @@ public class BerzerkerBehaviour : MonoBehaviour
     [SerializeField] public float ultiCounter;
     private float ultiWait;
     private bool isUlt = false;
+    [Space]
+    [Header("Keys")]
+    [SerializeField] public GameObject key;
+    [SerializeField] public bool keyHolder;
+
+    [Header("Score Purposes:")]
+    private ScoreAdded score;
+    private int bossScore = 200;
+    private int addingScore = 30;
 
     private NavMeshAgent agent;
     private Transform player;
@@ -54,6 +64,9 @@ public class BerzerkerBehaviour : MonoBehaviour
         HP = maxHp;
         hpBar.GetComponent<Slider>().maxValue = maxHp;
         hpBar.GetComponent<Slider>().value = maxHp;
+
+        GameObject scoreObject = GameObject.FindGameObjectWithTag("Score");
+        score = scoreObject.GetComponent<ScoreAdded>();
     }
 
     // Update is called once per frame
@@ -147,8 +160,24 @@ public class BerzerkerBehaviour : MonoBehaviour
 
         if (HP <= 0)
         {
+            if(isFinal == true)
+            {
+                gameObject.GetComponent<SummonedDeath>().OnDeath();
+            }
             Destroy(gameObject);
+            if(isBoss == true)
+            {
+                score.GainScore(bossScore);
+            }
+            else
+            {
+                score.GainScore(addingScore);
+            }
             hpBar.SetActive(false);
+            if (keyHolder)
+            {
+                Instantiate(key, transform.position, transform.rotation);
+            }
         }
     }
 
@@ -156,7 +185,7 @@ public class BerzerkerBehaviour : MonoBehaviour
     {
         if(collision.collider.CompareTag("Player")) //&& isUlt)
         {
-            collision.collider.GetComponent<HealthBar>().TakeDamage(40);
+            collision.collider.GetComponent<HealthBar>().TakeDamage(25);
             ultiWait = ultiCounter;
         }
     }

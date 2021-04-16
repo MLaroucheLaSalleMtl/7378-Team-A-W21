@@ -5,6 +5,7 @@ using UnityEngine;
 public class OpenDoor : MonoBehaviour
 {
     [SerializeField] public int keysRequired;
+    [SerializeField] private AudioClip doorOpenSound;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,7 @@ public class OpenDoor : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && GameObject.FindGameObjectWithTag("Player").GetComponent<Keys>().numberOfKeys >= keysRequired)
         {
+            AudioClipManager.instance.PlayHitSound(doorOpenSound);
             gameObject.SetActive(false);
             if(keysRequired == 1)
             {

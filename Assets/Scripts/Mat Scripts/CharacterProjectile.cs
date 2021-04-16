@@ -31,6 +31,7 @@ public class CharacterProjectile : MonoBehaviour
         if(typeOfProjectile == ProjectileType.Throwable)
         {
             transform.position += throwArea * (Time.deltaTime * projSpeed);
+            Destroy(this.gameObject, 5.0f);
         }
     }
 
@@ -41,13 +42,18 @@ public class CharacterProjectile : MonoBehaviour
             if(collision.tag == "Enemy")
             {
                 collision.GetComponent<EnemyBehavior>().TakeDamage(projDmg);
+                Destroy(this.gameObject);
             }
             else if(collision.tag == "Berzerk")
             {
                 collision.GetComponent<BerzerkerBehaviour>().TakeDamage(projDmg);
+                Destroy(this.gameObject);
             }
-
-            Destroy(this.gameObject);
+            else if (collision.tag == "Necromancer")
+            {
+                collision.GetComponent<NecromancerBehaviour>().TakeDamage(projDmg);
+                Destroy(this.gameObject);
+            }
         }
         else if (collision.tag == "Player" && typeOfProjectile == ProjectileType.Pickup)
         {
@@ -55,7 +61,4 @@ public class CharacterProjectile : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
-
-
 }

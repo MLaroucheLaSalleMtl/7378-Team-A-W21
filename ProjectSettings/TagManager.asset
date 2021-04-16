@@ -14,6 +14,10 @@ TagManager:
   - LevelUpPanel
   - Shield
   - Keys
+  - Pause
+  - ArrowTrap
+  - Anim
+  - Necromancer
   layers:
   - Default
   - TransparentFX

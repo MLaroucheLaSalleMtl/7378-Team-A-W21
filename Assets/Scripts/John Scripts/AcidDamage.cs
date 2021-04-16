@@ -30,9 +30,8 @@ public class AcidDamage : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            movement.Speed -= slowSpeed;
-            
-            InvokeRepeating("PoisonDamage", 1f, 0.25f);
+            movement.Speed -= slowSpeed;   
+            InvokeRepeating("PoisonDamage", 0.25f, 0.2f);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

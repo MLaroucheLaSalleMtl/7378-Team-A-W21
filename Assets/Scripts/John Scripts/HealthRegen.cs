@@ -8,7 +8,7 @@ public class HealthRegen : MonoBehaviour
     private HealthBar health;
 
     [Header("Variables")]
-    [SerializeField] private int healthGiven = 1;
+    [SerializeField] private int healthGiven = 3;
 
     private void Start()
     {
@@ -21,7 +21,7 @@ public class HealthRegen : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            InvokeRepeating("RegeningHealth", 1, 0.1f);   
+            InvokeRepeating("RegeningHealth", 0.25f, 0.1f);   
         }
     }
 

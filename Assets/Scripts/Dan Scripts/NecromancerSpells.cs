@@ -9,52 +9,66 @@ public class NecromancerSpells : MonoBehaviour
     [SerializeField] public float summonCounterMax;
     private float summonCounter;
     private int undeadCount = 0;
-    private int requirmentCount = 0;
-    private int shieldDrop = 1;
+    // private int requirmentCount = 0;
+    [SerializeField] public GameObject shield;
+    public int shieldDrop = 2;
+
+    //public static NecromancerSpells instance;
+    /*private void Awake()
+    {
+        instance = this;
+    }*/
 
     // Start is called before the first frame update
     void Start()
     {
-        summonCounter = summonCounterMax;
+        //summonCounter = summonCounterMax;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(undeadCount < 2)
+        /*if(undeadCount < 2)
         {
             SummonUndead();
-        }
+        }*/
 
-        if(requirmentCount >= 3)
+        /*if(requirmentCount >= 2)
         {
             SummonBoss();
-        }
+            requirmentCount = 0;
+        }*/
 
-        if(GameObject.FindGameObjectWithTag("Berzerk").GetComponent<BerzerkerBehaviour>().Hp <= 0)
+        /*if(GameObject.FindGameObjectWithTag("Berzerk").GetComponent<BerzerkerBehaviour>().Hp <= 0)
         {
-            undeadCount--;
-        }
+            //undeadCount--;
+            requirmentCount++;
+        }*/
 
         if(shieldDrop <= 0)
         {
-            GameObject.FindGameObjectWithTag("Shield").GetComponent<CircleCollider2D>().enabled = false;
+            shield.SetActive(false);
+            gameObject.GetComponent<NecromancerBehaviour>().isShielded = false;
         }
 
-        if(Input.GetKeyDown(KeyCode.P))
+        /*if(Boss.GetComponent<BerzerkerBehaviour>().Hp <= 0)
+        {
+            shieldDrop--;
+        }*/
+
+        /*if(Input.GetKeyDown(KeyCode.P))
         {
             shieldDrop -= 2;
-        }
+        }*/
     }
 
     private void SummonUndead()
     {
         if(summonCounter <= 0)
         {
-            Vector3 summon1 = new Vector3(0, -5, 0);
-            Instantiate(undead, summon1, transform.rotation);
+            Vector3 summon1 = new Vector3(0, 5, 0);
+            Instantiate(undead, gameObject.transform.position - summon1, Quaternion.identity);
             undeadCount++;
-            requirmentCount++;
             summonCounter = summonCounterMax;
         }
         else if(summonCounter > 0)
@@ -67,10 +81,9 @@ public class NecromancerSpells : MonoBehaviour
     {
         if (summonCounter <= 0)
         {
-            Vector3 summon1 = new Vector3(0, -5, 0);
-            Instantiate(Boss, summon1, transform.rotation);
-            undeadCount++;
-            shieldDrop++;
+            Vector3 summon1 = new Vector3(0, 5, 0);
+            Instantiate(Boss, gameObject.transform.position - summon1, Quaternion.identity);
+            //undeadCount++;
             summonCounter = summonCounterMax;
         }
         else if (summonCounter > 0)

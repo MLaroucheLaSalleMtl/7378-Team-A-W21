@@ -10,7 +10,14 @@ public class ChangeScene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(SceneManager.GetActiveScene().buildIndex == 3)
+        {
+            GameObject.FindGameObjectWithTag("Save").GetComponent<Saving>().OnLoad();
+        }
+        else if (SceneManager.GetActiveScene().buildIndex == 4)
+        {
+            GameObject.FindGameObjectWithTag("Save").GetComponent<Saving>().OnLoad();
+        }
     }
 
     // Update is called once per frame
@@ -23,6 +30,20 @@ public class ChangeScene : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            
+            if(SceneManager.GetActiveScene().buildIndex == 2)
+            {
+                GameObject.FindGameObjectWithTag("Save").GetComponent<Saving>().OnSave();
+            }
+            else if (SceneManager.GetActiveScene().buildIndex == 3)
+            {
+                GameObject.FindGameObjectWithTag("Save").GetComponent<Saving>().OnSave();
+            }
+            else if (SceneManager.GetActiveScene().buildIndex == 4)
+            {
+                GameObject.FindGameObjectWithTag("Save").GetComponent<Saving>().OnSave();
+            }
+
             SceneManager.LoadScene(sceneBuildIndex: sceneNumber);
         }
     }

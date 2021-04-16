@@ -19,8 +19,9 @@ public class CharacterAttack : MonoBehaviour
     [Header("Ultimate Area")]
     [SerializeField] private Transform ultArea;
     [SerializeField] private float ultSize;
-    [SerializeField] ParticleSystem ultPoof;
+    //[SerializeField] ParticleSystem ultPoof;
     [SerializeField] private Text ultCdTimer;
+    [SerializeField] private GameObject ultAnimation;
     private int staminaUlt = 20;
     private float ultCd = 0f;
     public float upgradeUltCd = 15f;
@@ -40,6 +41,10 @@ public class CharacterAttack : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioClip stabSound;
     [SerializeField] private AudioClip missSound;
+    [SerializeField] private AudioClip throwSound;
+    [SerializeField] private AudioClip ultSound;
+
+    public float UltCd { get => ultCd; set => ultCd = value; }
 
 
     // Start is called before the first frame update
@@ -53,6 +58,7 @@ public class CharacterAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        projCounter.text = projCount.ToString("0");
         anim.SetBool("IsAttack", isAttacking);
         AttackDirection();
         OnAttack();
@@ -84,15 +90,21 @@ public class CharacterAttack : MonoBehaviour
                         AudioClipManager.instance.PlayHitSound(stabSound);
                         enemies[i].GetComponent<BerzerkerBehaviour>().TakeDamage(dmg);
                     }
+                    else if (enemies[i].CompareTag("Necromancer"))
+                    {
+                        AudioClipManager.instance.PlayHitSound(stabSound);
+                        enemies[i].GetComponent<NecromancerBehaviour>().TakeDamage(dmg);
+                    }
                     Vector2 knock = enemyTrans.position - transform.position;
                     enemyTrans.position = new Vector2(enemyTrans.position.x + knock.x, enemyTrans.position.y + knock.y);
                 }
                 
             }
-            if (Input.GetButton("Ultimate") && ultCd <= 0 && canUseStamina == true)
+            if (Input.GetButton("Ultimate") && UltCd <= 0 && canUseStamina == true)
             {
-                ultCd = upgradeUltCd;
-                ultPoof.Play();
+                UltCd = upgradeUltCd;
+                AudioClipManager.instance.PlayHitSound(ultSound);
+                Instantiate(ultAnimation, transform.position, Quaternion.identity);
                 StaminaBar.instance.UseStamina(staminaUlt);
                 Collider2D[] enemies = Physics2D.OverlapCircleAll(ultArea.position, ultSize, enemyLayer);
                 for (int i = 0; i < enemies.Length; i++)
@@ -104,6 +116,10 @@ public class CharacterAttack : MonoBehaviour
                     else if (enemies[i].CompareTag("Berzerk"))
                     {
                         enemies[i].GetComponent<BerzerkerBehaviour>().TakeDamage(dmg*3);
+                    }
+                    else if (enemies[i].CompareTag("Necromancer"))
+                    {
+                        enemies[i].GetComponent<NecromancerBehaviour>().TakeDamage(dmg * 3);
                     }
                 }
             }
@@ -130,6 +146,7 @@ public class CharacterAttack : MonoBehaviour
                 }
                 StaminaBar.instance.UseStamina(staminaThrow);
                 GameObject proj = Instantiate(projectile, atkArea.transform.position, Quaternion.Euler (0, 0, rotate), null);
+                AudioClipManager.instance.PlayHitSound(throwSound);
                 projCount--;
                 projCounter.text = projCount.ToString("0");
 
@@ -191,11 +208,11 @@ public class CharacterAttack : MonoBehaviour
         {
             projCd -= Time.deltaTime;
         }
-        if (ultCd >= 0)
+        if (UltCd >= 0)
         {
-            ultCd -= Time.deltaTime;
+            UltCd -= Time.deltaTime;
             ultCdTimer.gameObject.SetActive(true);
-            ultCdTimer.text = ultCd.ToString("0");
+            ultCdTimer.text = UltCd.ToString("0");
         }
         else
         {

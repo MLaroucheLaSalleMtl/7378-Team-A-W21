@@ -8,12 +8,13 @@ public class CharacterMovement : MonoBehaviour
     [Header("References")]
     [SerializeField] private Rigidbody2D player;
     [SerializeField] private LayerMask dashLayerMask;
+    [SerializeField] private GameObject dashAnimation;
     Animator anim;
 
     [Header("Variables")]
     [SerializeField] private float dashAmount = 3f;
     [SerializeField] private int dashCost = 20;
-    private float speed = 300.0f;
+    [SerializeField] private float speed = 300.0f;
 
 
     [Header("Boolean")]
@@ -54,9 +55,9 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         OnMove();
-
         if (Input.GetButtonDown("Dash") && CanDash1 == true && player.velocity.magnitude > 0)
         {
+            Instantiate(dashAnimation, transform.position, Quaternion.identity);
             isDashing = true;
             AudioClipManager.instance.PlayHitSound(dashSound);
         }
@@ -90,6 +91,5 @@ public class CharacterMovement : MonoBehaviour
         anim.SetFloat("X", dir.x);
         anim.SetFloat("Y", dir.y);
     }
-
 
 }
