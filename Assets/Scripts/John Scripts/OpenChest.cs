@@ -28,6 +28,9 @@ public class OpenChest : MonoBehaviour
     private bool isOpen = false;
     private bool canOpen = false;
 
+    [Header("Pause Settings")]
+    private PauseSettings pause;
+
     [Header("Audio Clips")]
     [SerializeField] private AudioClip openChestClip;
 
@@ -35,11 +38,14 @@ public class OpenChest : MonoBehaviour
     {
         GameObject scoreObject = GameObject.FindGameObjectWithTag("Score");
         score = scoreObject.GetComponent<ScoreAdded>();
+
+        GameObject pauseObject = GameObject.FindGameObjectWithTag("Pause");
+        pause = pauseObject.GetComponent<PauseSettings>();
     }
 
     private void Update()
     {
-        if (Input.GetButtonDown("Interact") && isOpen == false && canOpen == true)
+        if (Input.GetButtonDown("Interact") && isOpen == false && canOpen == true && pause.isPaused == false)
         {
             random = Random.Range(1, 101);
 

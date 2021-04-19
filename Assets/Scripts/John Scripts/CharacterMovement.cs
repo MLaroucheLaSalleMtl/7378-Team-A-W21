@@ -24,7 +24,11 @@ public class CharacterMovement : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioClip dashSound;
 
+    [Header("Movement Values")]
     Vector3 dir = new Vector3();
+
+    [Header("Script References")]
+    private PauseSettings pause;
 
 
 
@@ -37,25 +41,29 @@ public class CharacterMovement : MonoBehaviour
     {
         player = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+
+        GameObject pauseObject = GameObject.FindGameObjectWithTag("Pause");
+        pause = pauseObject.GetComponent<PauseSettings>();
     }
     
     public void OnMove()
     {
-        dir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        dir = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        //dir = context.ReadValue<Vector2>();
     }
 
     private void Movement()
     {
-            Vector3 pos = new Vector3();
-            pos += (dir.normalized * Speed) * Time.fixedDeltaTime;
-            player.velocity = pos; 
+        Vector3 pos = new Vector3();
+        pos += (dir.normalized * Speed) * Time.fixedDeltaTime;
+        player.velocity = pos; 
     }
 
     // Update is called once per frame
     void Update()
     {
         OnMove();
-        if (Input.GetButtonDown("Dash") && CanDash1 == true && player.velocity.magnitude > 0)
+        if (Input.GetButtonDown("Dash") && CanDash1 == true && player.velocity.magnitude > 0 && pause.isPaused == false)
         {
             Instantiate(dashAnimation, transform.position, Quaternion.identity);
             isDashing = true;
@@ -68,7 +76,6 @@ public class CharacterMovement : MonoBehaviour
         Animate();
         Movement();
 
-        
         if (isDashing == true)
         {
             Vector3 dashPosition = transform.position + dir * dashAmount;
@@ -77,7 +84,6 @@ public class CharacterMovement : MonoBehaviour
             {
                 dashPosition = raycastHit2D.point;
             }
-
             StaminaBar.instance.UseStamina(dashCost);
             player.MovePosition(dashPosition);
             isDashing = false;

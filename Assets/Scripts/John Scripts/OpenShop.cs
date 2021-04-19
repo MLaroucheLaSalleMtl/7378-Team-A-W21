@@ -12,17 +12,21 @@ public class OpenShop : MonoBehaviour
     [SerializeField] private GameObject panelLevelUp;
 
     private ScoreAdded score;
+    private PauseSettings pause;
 
     private void Start()
     {
         GameObject scoreObject = GameObject.FindGameObjectWithTag("Score");
         score = scoreObject.GetComponent<ScoreAdded>();
+
+        GameObject pauseObject = GameObject.FindGameObjectWithTag("Pause");
+        pause = pauseObject.GetComponent<PauseSettings>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Interact") && canOpen == true)
+        if (Input.GetButtonDown("Interact") && canOpen == true && pause.isPaused == false)
         {
             panelLevelUp.SetActive(true);
             shopPoints.text = "Score Points: " + score.currentScore.ToString();

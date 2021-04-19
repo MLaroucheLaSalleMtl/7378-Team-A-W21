@@ -40,8 +40,11 @@ public class LavaDamage : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        onlyOnce = false;
-        startTimer = true;
+        if(collision.tag == "Player" && onlyOnce == true)
+        {
+            onlyOnce = false;
+            startTimer = true;
+        }
     }
 
     private void Update()
@@ -49,7 +52,7 @@ public class LavaDamage : MonoBehaviour
         if (startTimer == true)
         {
             timer += Time.deltaTime;
-            if(timer >= 0.5)
+            if(timer >= 2)
             {
                 movement.Speed = tempSpeed;
                 CancelInvoke("TakeLavaDamage");

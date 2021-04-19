@@ -44,6 +44,9 @@ public class CharacterAttack : MonoBehaviour
     [SerializeField] private AudioClip throwSound;
     [SerializeField] private AudioClip ultSound;
 
+    [Header("Script References")]
+    private PauseSettings pause;
+
     public float UltCd { get => ultCd; set => ultCd = value; }
 
 
@@ -53,6 +56,9 @@ public class CharacterAttack : MonoBehaviour
         anim = GetComponent<Animator>();
         projCount = maxProjCount;
         projCounter.text = projCount.ToString("0");
+
+        GameObject pauseObject = GameObject.FindGameObjectWithTag("Pause");
+        pause = pauseObject.GetComponent<PauseSettings>();
     }
 
     // Update is called once per frame
@@ -70,7 +76,7 @@ public class CharacterAttack : MonoBehaviour
         if (!isAttacking)
         {
             
-            if (Input.GetButton("Fire1") && atkCd <= 0)
+            if (Input.GetButton("Fire1") && atkCd <= 0 && pause.isPaused == false) //isPaused = John Trihas
             {
                 AudioClipManager.instance.PlayHitSound(missSound);
                 atkCd = 0.3f;
@@ -100,7 +106,7 @@ public class CharacterAttack : MonoBehaviour
                 }
                 
             }
-            if (Input.GetButton("Ultimate") && UltCd <= 0 && canUseStamina == true)
+            if (Input.GetButton("Ultimate") && UltCd <= 0 && canUseStamina == true && pause.isPaused == false) //isPaused = John Trihas
             {
                 UltCd = upgradeUltCd;
                 AudioClipManager.instance.PlayHitSound(ultSound);
@@ -123,7 +129,7 @@ public class CharacterAttack : MonoBehaviour
                     }
                 }
             }
-            if (Input.GetButton("Fire2") && projCd <= 0 && canUseStamina == true && projCount > 0)
+            if (Input.GetButton("Fire2") && projCd <= 0 && canUseStamina == true && projCount > 0 && pause.isPaused == false) //isPaused = John Trihas
             {
                 projCd = 1.0f;
                 float rotate = 0f;

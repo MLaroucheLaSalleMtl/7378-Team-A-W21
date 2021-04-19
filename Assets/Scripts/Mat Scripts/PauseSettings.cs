@@ -9,7 +9,7 @@ public class PauseSettings : MonoBehaviour
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject controlPanel;
     [SerializeField] private GameObject SoundPanel;
-    private bool isPaused = false;
+    public bool isPaused = false;
     private Slider[] sliders;
 
     public static PauseSettings instance;

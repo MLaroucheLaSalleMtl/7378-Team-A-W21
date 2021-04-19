@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PotionHandler : MonoBehaviour
 {
@@ -30,16 +31,20 @@ public class PotionHandler : MonoBehaviour
 
     public static PotionHandler instance;
 
+    [Header("Script References")]
+    private PauseSettings pause;
+
     [SerializeField] private AudioClip drinkSound;
 
     private void Awake()
     {
         instance = this;
     }
-    // Start is called before the first frame update
-    void Start()
-    {
 
+    private void Start()
+    {
+        GameObject pauseObject = GameObject.FindGameObjectWithTag("Pause"); // John Trihas
+        pause = pauseObject.GetComponent<PauseSettings>();
     }
 
     // Update is called once per frame
@@ -55,7 +60,7 @@ public class PotionHandler : MonoBehaviour
             dmgTimer -= Time.deltaTime;
 
         }
-        if (Input.GetButton("HealthPotion"))
+        if (Input.GetButton("HealthPotion") && pause.isPaused == false)
         {
             if(hasHealPotion)
             {
@@ -67,7 +72,7 @@ public class PotionHandler : MonoBehaviour
 
             } 
         }
-        else if(Input.GetButton("StaminaPotion"))
+        else if(Input.GetButton("StaminaPotion") && pause.isPaused == false)
         {
             if (hasStaminaPotion)
             {
@@ -78,7 +83,7 @@ public class PotionHandler : MonoBehaviour
                 AudioClipManager.instance.PlayHitSound(drinkSound);
             }
         }
-        else if (Input.GetButton("SpeedPotion"))
+        else if (Input.GetButton("SpeedPotion") && pause.isPaused == false)
         {
             if (hasSpeedPotion)
             {
@@ -100,7 +105,7 @@ public class PotionHandler : MonoBehaviour
             isSpeed = false;
             speedTimer = 5.0f;
         }
-        else if (Input.GetButton("DamagePotion"))
+        else if (Input.GetButton("DamagePotion") && pause.isPaused == false)
         {
             if (hasDamagePotion)
             {
